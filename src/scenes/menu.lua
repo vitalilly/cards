@@ -18,6 +18,16 @@ S:addGroup('asteroids', {init = function(group)
     end
 end})
 
+S:addObjectAs('player',{
+    script = 'entity.playerspaceship',
+    arguments = {
+    x=w/2,y=h/2,
+    scene = S.scene,
+    health = 5,
+    shotColor = {255,255,255,255},
+    }
+})
+
 S:addGroup('widgets', {z = 1, init = function(group)
     -- play button
     group:addAs('playLabel', require('entity.widgets.Label'){

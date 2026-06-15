@@ -94,16 +94,16 @@ function SpaceShip:addForceV(fPar, fOrth)
 end
 
 function SpaceShip:forward(strength)
-    self:addForceV(self.thrust * (strength or 1))
+    self:addForce(0,-self.thrust * (strength or 1))
 end
 function SpaceShip:backward(strength)
-    self:addForceV(-self.thrust * (strength or 1))
+    self:addForce(0,self.thrust * (strength or 1))
 end
-function SpaceShip:rotateRight(strength)
-    self:addTorque(self.rthrust * (strength or 1))
+function SpaceShip:right(strength)
+    self:addForce(self.thrust * (strength or 1),0)
 end
-function SpaceShip:rotateLeft(strength)
-    self:addTorque(-self.rthrust * (strength or 1))
+function SpaceShip:left(strength)
+    self:addForce(-self.thrust * (strength or 1),0)
 end
 
 function SpaceShip:addTorque(t)
