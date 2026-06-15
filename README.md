@@ -1,12 +1,13 @@
-# Asteroids
+# unnamed project
 
+Code adapted from github.com/florimondmanca/Asteroid
 Remake of the Asteroid classic retro game with Lua and [Love2D](https://love2d.org). This is a prototype.
 
 ![Screenshot](media/cover.png)
 
-## Download
+## Asteroid
 
-You can download the game at [florimondmanca.itch.io](https://florimondmanca.itch.io/asteroids).
+You can download the original asteroids game at [florimondmanca.itch.io](https://florimondmanca.itch.io/asteroids).
 
 ## Installation
 
@@ -28,6 +29,6 @@ $ make
 
 ## References
 
-Assets: [Kenney Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux).
+(Asteroid) Assets: [Kenney Space Shooter Redux](http://kenney.nl/assets/space-shooter-redux).
 
-Third-party Lua packages: [lume](https://github.com/rxi/lume), [hump](http://hump.readthedocs.io/en/latest/gamestate.html)
+(Asteroid) Third-party Lua packages: [lume](https://github.com/rxi/lume), [hump](http://hump.readthedocs.io/en/latest/gamestate.html)
