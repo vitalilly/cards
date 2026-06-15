@@ -1,13 +1,11 @@
 # unnamed project
 
-Code adapted from github.com/florimondmanca/Asteroid
-Remake of the Asteroid classic retro game with Lua and [Love2D](https://love2d.org). This is a prototype.
+-# Code adapted from https://github.com/florimondmanca/Asteroid
+Gamdev project built using [Love2D](https://love2d.org). This is a prototype.
 
 ![Screenshot](media/cover.png)
 
-## Asteroid
-
-You can download the original asteroids game at [florimondmanca.itch.io](https://florimondmanca.itch.io/asteroids).
+## Title.
 
 ## Installation
 
