@@ -6,6 +6,12 @@ local ParticleSystem = require 'entity.particlesystem'
 
 local Player = SpaceShip:extend()
 
+--creation of hotkey variables
+local up = {'w','up'}
+local down = {'s','down'}
+local left = {'a','left'}
+local right = {'d','right'}
+
 function Player:init(t)
     t = lume.merge(t or {}, {
         image = love.graphics.newImage('assets/img/player.png'),
@@ -17,10 +23,10 @@ function Player:init(t)
 end
 
 function Player:externalActions()
-    if love.keyboard.isDown('up') then self:forward() end
-    if love.keyboard.isDown('down') then self:backward() end
-    if love.keyboard.isDown('right') then self:rotateRight() end
-    if love.keyboard.isDown('left') then self:rotateLeft() end
+    if love.keyboard.isDown(up) then self:forward() end
+    if love.keyboard.isDown(down) then self:backward() end
+    if love.keyboard.isDown(right) then self:right() end
+    if love.keyboard.isDown(left) then self:left() end
 end
 
 function Player:freeze()
