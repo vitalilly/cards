@@ -1,7 +1,7 @@
 # unnamed project
 
--# Code adapted from https://github.com/florimondmanca/Asteroid
-Gamdev project built using [Love2D](https://love2d.org). This is a prototype.
+#### Code adapted from https://github.com/florimondmanca/Asteroid
+Gamedev project built using [Love2D](https://love2d.org). This is a prototype.
 
 ![Screenshot](media/cover.png)
 
