@@ -21,7 +21,7 @@ S:addObjectAs('player',{
 S:addObjectAs('knight',{
     script = 'entity.player',
     arguments = {
-    x=w/2-100,y=h/2-100,
+    x=w/2,y=h/2,
     scene = S.scene,
     }
 })
@@ -64,8 +64,8 @@ S:addGroup('widgets', {z = 1, init = function(group)
     })
 end})
 
---S:addCallback('enter', function()
- --   love.graphics.setBackgroundColor(0.078, 0.098, 0.137)
---end)
+S:addCallback('enter', function()
+   love.graphics.setBackgroundColor(0.5,0.5,0.5)
+end)
 
 return S
