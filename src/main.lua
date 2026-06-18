@@ -2,7 +2,6 @@
 require 'extensions'
 
 local gamestate = require 'lib.gamestate'
-local initLuis = require 'luis.init'
 
 require 'core.soundmanager'
 require 'sounds'
