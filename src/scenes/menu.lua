@@ -7,17 +7,6 @@ local w, h = love.graphics.getDimensions()
 
 local S = SceneBuilder()
 
-S:addGroup('asteroids', {init = function(group)
-    for _ = 1, 20 do
-        group:add(Asteroid.newRandom{
-            x = lume.random(w),
-            y = lume.random(h),
-            omega = .3,
-            speed = 20,
-        })
-    end
-end})
-
 S:addObjectAs('player',{
     script = 'entity.playerspaceship',
     arguments = {
@@ -25,6 +14,15 @@ S:addObjectAs('player',{
     scene = S.scene,
     health = 5,
     shotColor = {255,255,255,255},
+    }
+})
+
+
+S:addObjectAs('knight',{
+    script = 'entity.player',
+    arguments = {
+    x=w/2-100,y=h/2-100,
+    scene = S.scene,
     }
 })
 
@@ -66,8 +64,8 @@ S:addGroup('widgets', {z = 1, init = function(group)
     })
 end})
 
-S:addCallback('enter', function()
-    love.graphics.setBackgroundColor(0.078, 0.098, 0.137)
-end)
+--S:addCallback('enter', function()
+ --   love.graphics.setBackgroundColor(0.078, 0.098, 0.137)
+--end)
 
 return S
