@@ -17,6 +17,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effectsSOT = o.effectsSOT or {} --All start of turn effects stored as a table
     self.effectsEOT = o.effectsEOT or {} --All end of turn effects stored as a table
     self.minions = o.minions or {} --List of all minions the player has
+    self.opponents = o.opponents or {} --list of all other players
 end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
@@ -28,6 +29,12 @@ function cardPlayer:DeterminePendingDamage() --Determine the largest source of d
     end
     self.pendingDamage = max
 
+end
+
+function cardPlayer:resetPendingDamage()
+    for i, v in ipairs(self.opponents) do --For every opponent we are going to set their associated key value pair to 0
+        self.allSourcesOfDamage[v] = 0
+    end
 end
 
 function cardPlayer:ResolveDamage() --Determine if the player blocked or not
