@@ -36,11 +36,30 @@ function cardPlayer:ResolveDamage() --Determine if the player blocked or not
     self.pendingDamage = 0
 
     if unblockedDamage > 0 then --Prevents the player from gaining health from blocking
+        unblockedDamage = self.MinionstaketheHit(unblockedDamage) --Minions take damage first. Update unlbocked damage after minions fall in the line of duty
         self.health = self.health - unblockedDamage
         --TODO add a check for a lose state.
     end
     --TODO Add some kinda else statement to trigger an animation that displays that all damage was blocked
 
+end
+
+function cardPlayer:MinionsTakeTheHit(damage)
+    for i, minion in ipairs(self.minions) do
+        damage = minion.TakeTheHit(damage)
+        if damage == 0 then --We know that all the damage has been dealt out
+            break
+        end
+    end
+    
+    --Clean up all the dead minions
+    for i = #self.minions, 1, -1 do --Step backwards to prevent index shenanigans
+        if self.minions[i].health <= 0 then --If the given minion is dead
+            table.remove(self.minions,i) --Kill it
+        end    
+    end
+
+    return damage --So we know how much damage there is still to block
 end
 
 return cardPlayer
