@@ -1,6 +1,58 @@
-local Palette = {
-    {1,0,0},
-    {0,1,0},
-    {0,0,1}
+local Palettes = {
+    --palette options 1-4:
+    --in each palette, odd numbers are base, and even numbers are extra depth
+    {--blue-orange
+     {0,9,37}, --1: dark
+     {33,51,109},--2: hidark
+     {84,99,146},
+     {114,137,208},
+     {129,180,202},
+     {168,229,255},
+     {255,64,0},
+     {255,155,122}
+    },
+    {--green-red
+     {61,62,0},
+     {107,109,35},
+     {146,141,84},
+     {205,199,113},
+     {196,202,129},
+     {249,255,171},
+     {255,0,15},
+     {255,122,146}
+    },
+    {--red-blue
+     {62,7,0},
+     {109,44,35},
+     {143,102,84},
+     {202,140,110},
+     {196,167,128},
+     {255,255,174},
+     {0,91,255},
+     {122,153,255}
+    },
+    {--purple-yellow
+     {56,0,53},
+     {109,35,106},
+     {124,84,143},
+     {173,109,199},
+     {199,128,142},
+     {255,176,192},
+     {255,200,0},
+     {255,215,122}
+    }
 }
-return Palette
+
+function Palettes:select(n)
+    if     (n == 1) then
+        return Palettes[1]
+    elseif (n == 2) then
+        return Palettes[2]
+    elseif (n == 3) then
+        return Palettes[3]
+    elseif (n == 4) then
+        return Palettes[4]
+    end
+end
+
+return Palettes

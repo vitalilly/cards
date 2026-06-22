@@ -5,34 +5,24 @@ local Timer = require 'core.timer'
 local w, h = love.graphics.getDimensions()
 local i = 1
 
-local palette = require 'core.palette'
---testing that palette interface works
-for k,v in ipairs(palette) do --for every colour,
-    for j = 1,3 do --print the 3 RGB channels
-        print(k,v[j])
-    end
-end
-
 local Player = Entity:extend()
+
+--SPRITE & PALETTE LOADING
+local palette = require 'core.palette'
+palette = palette:select(1) --selects orange-blue palette: this should probably be controlled externally
 local front = 
-{ --size restricted to 3 values to allow testing palette : asset mapping without making 9 colours
-   'assets/player/front/DARK.PNG',
-   'assets/player/front/HIDARK.PNG',
-   'assets/player/front/MED.PNG',
---   'assets/player/front/HIMED.PNG',
---   'assets/player/front/LIGHT.PNG',
---   'assets/player/front/HILIGHT.PNG',
---   'assets/player/front/SAT.PNG',
---  'assets/player/front/HISAT.PNG',
---   'assets/player/front/VISOR.PNG'
+{
+   'assets/player/2/1.PNG',
+   'assets/player/2/2.PNG',
+   'assets/player/2/3.PNG',
+   'assets/player/2/4.PNG',
+   'assets/player/2/5.PNG',
+   'assets/player/2/6.PNG',
+   'assets/player/2/7.PNG',
+   'assets/player/2/8.PNG',
+ --  'assets/player/2/0.PNG',
 }
 local active = {}
-
-local function clone(t)
-    copy = { unpack(t) }
-    return copy
-end
-
 
 function Player:init(t)
 	Entity.init(self,t)
@@ -49,8 +39,7 @@ function Player:turn(dir)
     end
 
     if (dir == 'front') then
-    	active = clone(front) -- this doesn't work.
-        active = front --nor does this.
+        active = {unpack(front)} --nor does this.
         for k,v in pairs(active) do --this statement doesn't run: i suspect active is empty.
             print(v)
         end
@@ -64,7 +53,7 @@ function Player:draw()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
 			for i, v in ipairs(front) do
-                love.graphics.setColor(palette[i])
+                love.graphics.setColor(love.math.colorFromBytes(palette[i]))
 				sprite = love.graphics.newImage(v)
                 love.graphics.draw(sprite)
             end
