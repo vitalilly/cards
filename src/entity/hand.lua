@@ -7,19 +7,19 @@ function hand:init(o) --Intitialise an instance of the card class
     o = o or {} --Give a blank table if no object is given
 
     self.cards = o.cards or {}
-
+    self.deck = o.deck or {} --Set the deck that is associated with this hand
 end
 
-function hand:drawCards(x, deck) --Draw x cards from the deck
+function hand:drawCards(x) --Draw x cards from the deck
     for i = 1,x,1 do
-        local card = deck:drawACard()
+        local card = self.deck:drawACard()
         table.insert(self.cards,card)
     end
 end
 
-function hand:discardHand(deck) --Put the entire hand into the discard pile
+function hand:discardHand() --Put the entire hand into the discard pile
     for i, v in ipairs(self.cards) do
-        deck.discard(v)
+        self.deck.discard(v)
     end
     self.cards = {}
 end
