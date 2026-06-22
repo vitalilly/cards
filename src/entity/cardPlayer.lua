@@ -17,6 +17,45 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effectsSOT = o.effectsSOT or {} --All start of turn effects stored as a table
     self.effectsEOT = o.effectsEOT or {} --All end of turn effects stored as a table
     self.minions = o.minions or {} --List of all minions the player has
+    self.opponents = o.opponents or {} --list of all other players
+    self.cardQueue = o.cardQueue or {} --Lists all the cards that will play once the player has confirmed their turn
+    self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
+end
+
+function cardPlayer:playCard(card,target) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply
+    local tuple = {Card = card,Target = target}
+    table.insert(self.cardQueue,tuple)
+end
+
+function cardPlayer:checkForEffects(tuple)
+    for i,v in ipairs(self.effects) do
+        v.effect(tuple)
+    end
+end
+
+function cardPlayer:checkForSOT()
+    for i,v in ipairs(self.effectsSOT) do
+        v.SOT()
+    end
+end
+
+function cardPlayer:checkForEOT()
+    for i,v in ipairs(self.effectsEOT) do
+        v.EOT()
+    end
+end
+
+
+function cardPlayer:executeCards() --Plays all the cards on the queue
+    for i, v in ipairs(self.cardQueue) do
+        if v.Target == nil then
+            v.Card.play()
+        else
+            v.Card.playTarget(v.Target)
+        end
+        self:checkForEffects(v)
+    end
+    self.cardQueue = {} --Reset the queue
 end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
@@ -28,6 +67,12 @@ function cardPlayer:DeterminePendingDamage() --Determine the largest source of d
     end
     self.pendingDamage = max
 
+end
+
+function cardPlayer:resetPendingDamage()
+    for i, v in ipairs(self.opponents) do --For every opponent we are going to set their associated key value pair to 0
+        self.allSourcesOfDamage[v] = 0
+    end
 end
 
 function cardPlayer:ResolveDamage() --Determine if the player blocked or not
