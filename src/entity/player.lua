@@ -6,10 +6,17 @@ local w, h = love.graphics.getDimensions()
 local i = 1
 
 local Player = Entity:extend()
+--status, message = love.graphics.validateShader(true, require  'core.shader')
+--print(status, message)
 
 --SPRITE & PALETTE LOADING
 local palette = require 'core.palette'
 palette = palette:select(1) --selects orange-blue palette: this should probably be controlled externally
+
+shader = love.graphics.newShader(require 'core.shader')
+shader:send("colors", unpack(palette))
+
+
 local front = 
 {
    'assets/player/2/1.PNG',
@@ -35,29 +42,25 @@ end
 
 function Player:turn(dir)
 	if (dir == 'right') then 
-        active = right
+        active = {unpack(right)}
     end
 
     if (dir == 'front') then
-        active = {unpack(front)} --nor does this.
-        for k,v in pairs(active) do --this statement doesn't run: i suspect active is empty.
-            print(v)
-        end
+        active = {unpack(front)} 
     end
 end
-		
 
 function Player:draw()
 	love.graphics.setColor(1,1,1)
 	love.graphics.push()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
-			for i, v in ipairs(front) do
-                love.graphics.setColor(love.math.colorFromBytes(palette[i]))
+        love.graphics.setShader( shader )
+			for i, v in ipairs(active) do
 				sprite = love.graphics.newImage(v)
                 love.graphics.draw(sprite)
             end
-            love.graphics.setColor(1,1,1)
+            love.graphics.setShader()
 		love.graphics.pop()
 	love.graphics.pop()
 end

@@ -44,15 +44,7 @@ local Palettes = {
 }
 
 function Palettes:select(n)
-    if     (n == 1) then
-        return Palettes[1]
-    elseif (n == 2) then
-        return Palettes[2]
-    elseif (n == 3) then
-        return Palettes[3]
-    elseif (n == 4) then
-        return Palettes[4]
-    end
+    return Palettes[n]
 end
 
 return Palettes
