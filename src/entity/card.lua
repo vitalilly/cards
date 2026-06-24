@@ -8,8 +8,43 @@ function card:init(o) --Intitialise an instance of the card class
 
     self.image = o.image or ""
     self.textDescription = o.textDescription or ""
+    self.player = o.player or {} --Descirbes the player to whom this card belongs to.
+    self.targets = o.targets or false --Describes whether or not this card needs a target to work
+    self.tag = o.tag or 0 --Describes what category this card falls into
+    self.tagList = enum()
 end
 
+function enum()
+    return {None = 0, Attack = 1, Defend = 2}
+end
+
+function card:damage(x,target) --Deal x damage to target player
+        target.allSourcesOfDamage[self.player] = target.allSourcesOfDamage[self.player] + x --We use a key value pair using the player who played this card as the key and the amount of damage as the value.
+end
+
+function card:block(x) --block for x
+    self.player.currentBlock = self.player.currentBlock + x
+end
+
+function card:play()
+    print("This card should have this as an implementation")
+end
+
+function card:playTarget(target)
+    print("This card should have this as an implementation")
+end
+
+function card:effect(list)
+    print("This card has no implementation for an effect")
+end
+
+function card:SOT()
+    print("This card has no implementation for a start of turn effect")
+end
+
+function card:EOT()
+    print("This card has no implementation for end of turn effects")
+end
 --TODO. Create a template that can be used for playing cards
 
 return card
