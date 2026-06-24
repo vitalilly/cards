@@ -14,7 +14,14 @@ local palette = require 'core.palette'
 palette = palette:select(1) --selects orange-blue palette: this should probably be controlled externally
 
 shader = love.graphics.newShader(require 'core.shader')
-shader:send("colors", unpack(palette))
+
+--convert palette from 0-255 to 0-1 range
+local cpalette = {unpack(palette)}
+for i = 1,8 do
+    cpalette[i] = {love.math.colorFromBytes(palette[i])}
+end
+--send updated palette to shader
+shader:send("colors", unpack(cpalette))
 
 
 local front = 
