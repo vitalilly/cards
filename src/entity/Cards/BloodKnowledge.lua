@@ -7,6 +7,7 @@ function BloodKnowledge:init(o)
     o = o or {}
 
     self.targets = false
+    self.tag = self.taglist.Modifier
     self.playersAttacked = {}
 end
 

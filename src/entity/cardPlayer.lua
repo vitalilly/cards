@@ -20,6 +20,8 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.opponents = o.opponents or {} --list of all other players
     self.cardQueue = o.cardQueue or {} --Lists all the cards that will play once the player has confirmed their turn
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
+    self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
+    self.maxCardsPlayed = o.cardsPlayed or 1 --max num allowed
 end
 
 function cardPlayer:playCard(card,target) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply
@@ -95,13 +97,6 @@ function cardPlayer:MinionsTakeTheHit(damage)
         if damage == 0 then --We know that all the damage has been dealt out
             break
         end
-    end
-    
-    --Clean up all the dead minions
-    for i = #self.minions, 1, -1 do --Step backwards to prevent index shenanigans
-        if self.minions[i].health <= 0 then --If the given minion is dead
-            table.remove(self.minions,i) --Kill it
-        end    
     end
 
     return damage --So we know how much damage there is still to block

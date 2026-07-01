@@ -15,7 +15,7 @@ function card:init(o) --Intitialise an instance of the card class
 end
 
 function enum()
-    return {None = 0, Attack = 1, Defend = 2}
+    return {None = 0, Attack = 1, Defend = 2, Minion = 3,Modifier = 4}
 end
 
 function card:damage(x,target) --Deal x damage to target player
