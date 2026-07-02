@@ -6,17 +6,16 @@ local Pool = require 'core.pool'
 
 --push section
 local push = require 'lib.push' 
-love.window.setTitle("scene demo")
 
 love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
   
-local gamew, gameh = 640, 360 
+local gamew, gameh = 64, 36 
 local w, h = love.graphics.getDimensions()
 
 push:setupScreen(gamew, gameh, w, h, {
     fullscreen = false,
     resizable = true
-    --pixelperfect = true
+   -- ,pixelperfect = true
 })
 
 --palette handling

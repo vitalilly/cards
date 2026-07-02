@@ -45,7 +45,7 @@ function Player:turn(dir)
 end
 
 function Player:draw()
-	love.graphics.setColor(1,1,1)
+    love.graphics.setColor(1,1,1)
 	love.graphics.push()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
