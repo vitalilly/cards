@@ -25,7 +25,7 @@ function deck:drawACard() --return the card at the end of the cards array and re
         self:shuffleInDiscard() --Is this correct?!
     end
     local card = self.cards[#self.cards] --Access the index equal to the number of elements in the array. Lua starts at index 1 lmao
-    table.remove(self.cards) --Apparently ommitting the index of the remove automatically takes away the last element
+    table.remove(self.cards, #self.cards)
     return card
 end
 
