@@ -70,6 +70,7 @@ end
 local draw = GameScene.draw
 function GameScene:draw()
     push:apply("start")
+    love.graphics.setColor(1,1,1)
     self.camera:set()
     draw(self)
     self.camera:unset()
