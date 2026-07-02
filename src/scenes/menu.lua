@@ -21,7 +21,7 @@ S:addObjectAs('player',{
 S:addObjectAs('knight',{
     script = 'entity.player',
     arguments = {
-    x=w/2,y=h/2,
+    x=200,y=200,
     scene = S.scene,
     }
 })

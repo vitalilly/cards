@@ -1,6 +1,47 @@
+io.stdout:setvbuf('no') --idk what this does.
+
 local lume = require 'lib.lume'
 local Camera = require 'core.camera'
 local Pool = require 'core.pool'
+
+--push section
+local push = require 'lib.push' 
+love.window.setTitle("scene demo")
+
+love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
+  
+local gamew, gameh = 640, 360 
+local w, h = love.graphics.getDimensions()
+
+push:setupScreen(gamew, gameh, w, h, {
+    fullscreen = false,
+    resizable = true
+    --pixelperfect = true
+})
+
+--palette handling
+palette = require 'core.palette'
+palette = palette:select(1)
+local cpalette = {unpack(palette)}
+for i = 1,8 do 
+    cpalette[i] = {love.math.colorFromBytes(palette[i])}
+end
+
+--shader handling
+shader = love.graphics.newShader(require 'core.shader') 
+shader:send("colors", unpack(cpalette))
+
+--canvas handling
+push:setupCanvas({
+    {name = 'main_canvas'}
+})
+
+--resize callback override
+function love.resize(w,h)
+    push:resize(w,h)
+end
+
+--
 
 local GameScene = Pool:extend()
 
@@ -11,6 +52,7 @@ function GameScene:init()
     self.camera = Camera()
     self:addAs('timer', require('core.timer').global)
     self:setup()
+    push:setShader( shader ) --this is done in love.load() in the example: must be done during runtime?
 end
 
 --- callback, called in GameScene:init()
@@ -28,9 +70,11 @@ end
 
 local draw = GameScene.draw
 function GameScene:draw()
-    self.camera:set()
+    push:apply("start")
+  --  self.camera:set()
     draw(self)
-    self.camera:unset()
+  --  self.camera:unset()
+    push:apply("end")
 end
 
 --- creates a new group and the associated add/remove helper methods

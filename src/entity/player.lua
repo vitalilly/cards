@@ -9,21 +9,8 @@ local Player = Entity:extend()
 --status, message = love.graphics.validateShader(true, require  'core.shader')
 --print(status, message)
 
---SPRITE & PALETTE LOADING
-local palette = require 'core.palette'
-palette = palette:select(1) --selects orange-blue palette: this should probably be controlled externally
 
-shader = love.graphics.newShader(require 'core.shader')
-
---convert palette from 0-255 to 0-1 range
-local cpalette = {unpack(palette)}
-for i = 1,8 do
-    cpalette[i] = {love.math.colorFromBytes(palette[i])}
-end
---send updated palette to shader
-shader:send("colors", unpack(cpalette))
-
-
+-- sprite loading
 local front = 
 {
    'assets/player/2/1.PNG',
@@ -62,12 +49,10 @@ function Player:draw()
 	love.graphics.push()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
-        love.graphics.setShader( shader )
 			for i, v in ipairs(active) do
 				sprite = love.graphics.newImage(v)
                 love.graphics.draw(sprite)
             end
-            love.graphics.setShader()
 		love.graphics.pop()
 	love.graphics.pop()
 end
