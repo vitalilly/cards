@@ -6,6 +6,7 @@ function card:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
 
+    self.title = o.title or ""
     self.image = o.image or ""
     self.textDescription = o.textDescription or ""
     self.player = o.player or {} --Descirbes the player to whom this card belongs to.
@@ -45,7 +46,15 @@ end
 function card:EOT()
     print("This card has no implementation for end of turn effects")
 end
---TODO. Create a template that can be used for playing cards
+
+function card:removeFrom(list)
+    for i, v in ipairs(list) do
+        if v == self then
+            table.remove(list, i)
+            break
+        end
+    end
+end
 
 return card
 
