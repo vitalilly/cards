@@ -6,6 +6,8 @@ function follower:init(o)
     minion.init(self,o)
     o = o or {}
 
+
+    self.title = "Summon Follower"
     self.targets = false
     self.tag = self.tagList.Minion
     self.health = 1
@@ -21,6 +23,6 @@ function follower:SOT()
 end
 
 function follower:death()
-    self.player.minions[self] = nil
-    self.player.effectsSOT[self] = nil
+    self:removeFrom(self.player.minions)
+    self:removeFrom(self.player.effectsSOT)
 end
