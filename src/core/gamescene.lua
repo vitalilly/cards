@@ -71,9 +71,9 @@ end
 local draw = GameScene.draw
 function GameScene:draw()
     push:apply("start")
-  --  self.camera:set()
+    self.camera:set()
     draw(self)
-  --  self.camera:unset()
+    self.camera:unset()
     push:apply("end")
 end
 
