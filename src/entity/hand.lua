@@ -1,6 +1,6 @@
-Entity = require 'core.entity'
+local Entity = require 'core.entity'
 
-hand = Entity:extend()
+local hand = Entity:extend()
 
 function hand:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)

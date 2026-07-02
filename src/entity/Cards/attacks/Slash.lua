@@ -6,6 +6,7 @@ function slash:init(o)
     card.init(self,o)
     o = o or {}
 
+    self.title = "Slash"
     self.targets = true
     self.tag = self.tagList.Attack
 end

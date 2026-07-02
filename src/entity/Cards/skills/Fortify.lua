@@ -6,6 +6,7 @@ function fortify:init(o)
     card.init(self,o)
     o = o or {}
 
+    self.title = "Fortify"
     self.targets = true
     self.tag = self.tagList.Defend
 end

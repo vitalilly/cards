@@ -21,7 +21,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.cardQueue = o.cardQueue or {} --Lists all the cards that will play once the player has confirmed their turn
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
-    self.maxCardsPlayed = o.cardsPlayed or 1 --max num allowed
+    self.maxCardsPlayed = o.maxCardsPlayed or 1 --max num allowed
 end
 
 function cardPlayer:playCard(card,target) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply
@@ -83,7 +83,7 @@ function cardPlayer:ResolveDamage() --Determine if the player blocked or not
     self.pendingDamage = 0
 
     if unblockedDamage > 0 then --Prevents the player from gaining health from blocking
-        unblockedDamage = self.MinionstaketheHit(unblockedDamage) --Minions take damage first. Update unlbocked damage after minions fall in the line of duty
+        unblockedDamage = self.MinionsTakeTheHit(unblockedDamage) --Minions take damage first. Update unlbocked damage after minions fall in the line of duty
         self.health = self.health - unblockedDamage
         --TODO add a check for a lose state.
     end

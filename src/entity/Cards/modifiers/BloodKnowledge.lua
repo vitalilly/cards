@@ -5,9 +5,10 @@ local BloodKnowledge = card:extend()
 function BloodKnowledge:init(o)
     card.init(self,o)
     o = o or {}
-
+    
+    self.title = "Blood Knowledge"
     self.targets = false
-    self.tag = self.taglist.Modifier
+    self.tag = self.tagList.Modifier
     self.playersAttacked = {}
 end
 
@@ -31,7 +32,7 @@ function BloodKnowledge:effect(tuple) --Add to a list of players attacked
     table.insert(self.playersAttacked,target) --Add this target to the list
 end
 
-function BloodKnowledge:EOT() --For each player attacked at the start of the next turn draw that many cards.
+function BloodKnowledge:SOT() --For each player attacked at the start of the next turn draw that many cards.
     self.player.hand.drawCards(#self.playersAttacked)
     self.playersAttacked = {} --Reset the list
 end

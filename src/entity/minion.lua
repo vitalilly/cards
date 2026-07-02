@@ -16,7 +16,7 @@ function minion:TakeTheHit(damage)
         self:death()
     end
 
-    if self.health >= 0 then
+    if self.health <= 0 then
         return 0 --Represents that all the damage has been taken
     else  --Damage is less than 0
         --TODO death behavior
