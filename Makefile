@@ -5,14 +5,14 @@ install:
 
 build:
 ifeq ($(OS),Windows_NT)
-	@powershell -NoProfile -Command "Remove-Item -Force app.zip 2>$null; Compress-Archive -Path 'src\\*' -DestinationPath 'app.zip' -Force; if (Test-Path 'app.zip') { Rename-Item -Force 'app.zip' 'app.love' } else { exit 1 }"
+	@powershell -NoProfile -Command "Remove-Item -Force app.zip 2>$$null; Compress-Archive -Path 'src\\*' -DestinationPath 'app.zip' -Force; if (Test-Path 'app.zip') { Rename-Item -Force 'app.zip' 'app.love' } else { exit 1 }"
 else
 	cd src && zip -r ../app.love * && cd ..
 endif
 
 run:
 ifeq ($(OS),Windows_NT)
-	@where love >nul 2>&1 && love app.love || echo "love not found; install LÖVE or add it to PATH to run"
+	@powershell -NoProfile -Command "& (Get-Command love).Source app.love 2>&1"
 else
 	-@command -v love >/dev/null 2>&1 && love app.love || @echo '"love" not found; install LÖVE to run'
 endif

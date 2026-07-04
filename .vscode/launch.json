@@ -18,9 +18,11 @@
             "type": "lua-local",
             "request": "launch",
             "program": {
-                "command": "command"
+                "command": "love"
             },
-            "args": []
+            "args": ["${workspaceFolder}",
+                    "vsc_debug"
+        ]
         }
     ]
 }
