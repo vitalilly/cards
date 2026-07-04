@@ -9,13 +9,13 @@ local push = require 'lib.push'
 
 love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
   
-local gamew, gameh = 64, 36 
+local gamew, gameh = 640, 360 
 local w, h = love.graphics.getDimensions()
 
 push:setupScreen(gamew, gameh, w, h, {
     fullscreen = false,
     resizable = true
-   -- ,pixelperfect = true
+    ,pixelperfect = true
 })
 
 --palette handling
@@ -69,6 +69,7 @@ end
 
 local draw = GameScene.draw
 function GameScene:draw()
+    love.graphics.setColor(1,1,1)
     push:apply("start")
     self.camera:set()
     draw(self)

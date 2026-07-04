@@ -6,8 +6,6 @@ local w, h = love.graphics.getDimensions()
 local i = 1
 
 local Player = Entity:extend()
---status, message = love.graphics.validateShader(true, require  'core.shader')
---print(status, message)
 
 
 -- sprite loading
@@ -21,7 +19,6 @@ local front =
    'assets/player/2/6.PNG',
    'assets/player/2/7.PNG',
    'assets/player/2/8.PNG',
- --  'assets/player/2/0.PNG',
 }
 local active = {}
 
@@ -45,7 +42,6 @@ function Player:turn(dir)
 end
 
 function Player:draw()
-    love.graphics.setColor(1,1,1)
 	love.graphics.push()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
