@@ -7,12 +7,14 @@ function card:init(o) --Intitialise an instance of the card class
     o = o or {} --Give a blank table if no object is given
 
     self.title = o.title or ""
-    self.image = o.image or ""
+    self.image = o.image or love.graphics.newImage('assets/cardArt/Placeholder.png') --Implement a file that exists just to store all the assets
     self.textDescription = o.textDescription or ""
     self.player = o.player or {} --Descirbes the player to whom this card belongs to.
     self.targets = o.targets or false --Describes whether or not this card needs a target to work
     self.tag = o.tag or 0 --Describes what category this card falls into
     self.tagList = enum()
+    self.x = -200
+    self.y = 0
 end
 
 function enum()
@@ -54,6 +56,10 @@ function card:removeFrom(list)
             break
         end
     end
+end
+
+function card:draw()
+    love.graphics.draw(self.image,self.x,self.y)
 end
 
 return card

@@ -20,3 +20,5 @@ function ProtectorOfFaith:SOT() --Minions gain health
         v.health = v.health + 1
     end
 end
+
+return ProtectorOfFaith

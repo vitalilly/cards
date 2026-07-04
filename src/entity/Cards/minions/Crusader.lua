@@ -30,3 +30,5 @@ function crusader:death()
     self:removeFrom(self.player.minions)
     self:removeFrom(self.player.effects)
 end
+
+return crusader

@@ -36,3 +36,5 @@ function BloodKnowledge:SOT() --For each player attacked at the start of the nex
     self.player.hand.drawCards(#self.playersAttacked)
     self.playersAttacked = {} --Reset the list
 end
+
+return BloodKnowledge

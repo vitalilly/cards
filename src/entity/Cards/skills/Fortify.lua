@@ -14,3 +14,5 @@ end
 function fortify:playTarget(target) --Block for 3
     self:block(3)
 end
+
+return fortify

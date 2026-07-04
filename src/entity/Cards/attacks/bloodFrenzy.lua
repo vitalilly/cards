@@ -30,3 +30,4 @@ function bloodFrenzy:EOT()
     self:removeFrom(self.player.effectsEOT)
 end
 
+return bloodFrenzy

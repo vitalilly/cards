@@ -24,3 +24,5 @@ function monastery:death()
     self:removeFrom(self.player.minions)
     self:removeFrom(self.player.effectsSOT)
 end
+
+return monastery

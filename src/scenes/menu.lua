@@ -7,13 +7,10 @@ local w, h = love.graphics.getDimensions()
 
 local S = SceneBuilder()
 
-S:addObjectAs('player',{
-    script = 'entity.playerspaceship',
+S:addObjectAs('hand',{
+    script = 'entity.cardPlayer',
     arguments = {
-    x=w/2,y=h/2,
-    scene = S.scene,
-    health = 5,
-    shotColor = {255,255,255,255},
+        scene = S.scene,    
     }
 })
 

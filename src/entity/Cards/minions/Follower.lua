@@ -26,3 +26,5 @@ function follower:death()
     self:removeFrom(self.player.minions)
     self:removeFrom(self.player.effectsSOT)
 end
+
+return follower

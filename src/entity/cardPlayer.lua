@@ -1,4 +1,5 @@
 local Entity = require 'core.entity'
+local hand = require 'entity.hand'
 
 local cardPlayer = Entity:extend() --Player object that has this weird name because a player.lua already exists
 
@@ -8,7 +9,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
 
     self.health = o.health or 10
     self.deck = o.deck or {}
-    self.hand = o.hand or {}
+    self.hand = o.hand or hand:new()
 
     self.strength = o.strength or 0 --Added onto all damage this player does
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -100,6 +101,10 @@ function cardPlayer:MinionsTakeTheHit(damage)
     end
 
     return damage --So we know how much damage there is still to block
+end
+
+function cardPlayer:draw()
+    self.hand:draw()
 end
 
 return cardPlayer
