@@ -3,7 +3,6 @@ local Entity = require 'core.entity'
 local Timer = require 'core.timer'
 
 local w, h = love.graphics.getDimensions()
-local i = 1
 
 local Player = Entity:extend()
 
@@ -11,14 +10,14 @@ local Player = Entity:extend()
 -- sprite loading
 local front = 
 {
-   'assets/player/2/1.PNG',
-   'assets/player/2/2.PNG',
-   'assets/player/2/3.PNG',
-   'assets/player/2/4.PNG',
-   'assets/player/2/5.PNG',
-   'assets/player/2/6.PNG',
-   'assets/player/2/7.PNG',
-   'assets/player/2/8.PNG',
+   love.graphics.newImage('assets/player/2/1.PNG'),
+   love.graphics.newImage('assets/player/2/2.PNG'),
+   love.graphics.newImage('assets/player/2/3.PNG'),
+   love.graphics.newImage('assets/player/2/4.PNG'),
+   love.graphics.newImage('assets/player/2/5.PNG'),
+   love.graphics.newImage('assets/player/2/6.PNG'),
+   love.graphics.newImage('assets/player/2/7.PNG'),
+   love.graphics.newImage('assets/player/2/8.PNG'),
 }
 local active = {}
 
@@ -45,12 +44,10 @@ function Player:draw()
 	love.graphics.push()
 		love.graphics.translate(self.x, self.y)
 		love.graphics.push()
-			for i, v in ipairs(active) do
-				sprite = love.graphics.newImage(v)
-                love.graphics.draw(sprite)
+			for _, v in ipairs(active) do
+                love.graphics.draw(v)
             end
 		love.graphics.pop()
 	love.graphics.pop()
 end
-
 return Player
