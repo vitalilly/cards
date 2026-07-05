@@ -3,19 +3,20 @@ local Entity = require 'core.entity'
 local card = Entity:extend()
 
 local config = require 'conf'
+local assetManager = require 'core.assetManager'
 
 function card:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
 
     self.title = o.title or ""
-    self.image = o.image or love.graphics.newImage('assets/cardArt/Placeholder.png') --Implement a file that exists just to store all the assets
+    self.image = o.image or assetManager:getCardArt("Placeholder")
     self.textDescription = o.textDescription or ""
     self.player = o.player or {} --Descirbes the player to whom this card belongs to.
     self.targets = o.targets or false --Describes whether or not this card needs a target to work
     self.tag = o.tag or 0 --Describes what category this card falls into
     self.tagList = enum()
-    self.x = -200
+    self.x = -config.cardWidth - 20
     self.y = config.gameh - config.cardHeight
 end
 

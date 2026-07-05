@@ -1,6 +1,7 @@
 local card = require 'entity.card'
 
 local slash = card:extend()
+local assetManager = require 'core.assetManager'
 
 function slash:init(o)
     card.init(self,o)
@@ -8,7 +9,7 @@ function slash:init(o)
 
     self.title = "Slash"
     self.targets = true
-    self.image = love.graphics.newImage('assets/cardArt/Placeholder.png')
+    self.image = assetManager:getCardArt("Placeholder")
     self.tag = self.tagList.Attack
 end
 

@@ -11,7 +11,7 @@
 
  scene = helium.scene.new(true)
  scene:activate()
- [[
+ --[[
  TRYING TO FIGURE OUT HOW THE BUTTON SHELL WORKS HERE IDK WHJAT IM DOING
 
  local button = function()
