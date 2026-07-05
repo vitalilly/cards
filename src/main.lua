@@ -3,13 +3,15 @@ require 'extensions'
 
 local gamestate = require 'lib.gamestate'
 
-require 'core.uimanager' --ui manager using helium
+uimanager = require 'core.uimanager' --ui manager using helium
 require 'core.pushmanager' -- push & shader management
 require 'core.soundmanager'
 require 'sounds'
 math.randomseed(os.time())
 
 function love.load()
+    uimanager.loadScene('menu') --test: load "menu" scene (small rectangle)
+    uimanager.loadScene('game') --test: load "game" scene over it (big rectangle)
     gamestate.registerEvents()
     gamestate.switch(require('scenes/menu'):build())
 end

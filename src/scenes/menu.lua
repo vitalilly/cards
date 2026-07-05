@@ -14,9 +14,6 @@ S:addObjectAs('hand',{
     }
 })
 
-local element = elementCreator({text = 'foo-bar'},100,20)
-element:draw(100,100)
-
 S:addObjectAs('knight',{
     script = 'entity.player',
     arguments = {

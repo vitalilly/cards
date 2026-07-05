@@ -7,6 +7,7 @@ local Pool = require 'core.pool'
 --resize callback override
 function love.resize(w,h)
     push:resize(w,h)
+    scene:resize(w,h)
 end
 --
 
@@ -40,13 +41,13 @@ end
 local draw = GameScene.draw
 function GameScene:draw()
     love.graphics.setShader(shader) --shader handled globally because of push issues
-    push:start()
-    scene:draw() -- draw helium ui
+    push:start() --apply push transformations
     self.camera:set()
     draw(self)
     self.camera:unset()
+    scene:draw() -- draw helium ui scene
     push:finish()
-    love.graphics.setShader()
+    love.graphics.setShader() --reset shader to default
 end
 
 --- creates a new group and the associated add/remove helper methods
