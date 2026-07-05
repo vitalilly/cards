@@ -5,6 +5,8 @@ config.gameh = 360
 config.cardHeight = 45
 config.cardWidth = 100
 
+config.globalPalette = 3 -- [1-4]
+
 function love.conf(t)
     t.window.title = "Untitled Card Game"
     t.window.width = 1280

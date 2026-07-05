@@ -18,7 +18,7 @@ push:setupScreen(gamew, gameh, w, h, {
 
 --palette handling
 local palette = require 'core.palette'
-local palette = palette:select(1)
+local palette = palette:select(config.globalPalette)
 local cpalette = {unpack(palette)}
 for i = 1,8 do 
     cpalette[i] = {love.math.colorFromBytes(palette[i])}

@@ -3,14 +3,36 @@
  local class = require 'utils.class'
  local helium = require 'helium'
  local useState = require 'helium.hooks.state'--add states to components
- local input = require 'helium.core.input'--add input to components
+ local input = require 'helium.core.input'
+ local useButton = require 'helium.shell.button' --button shell
  local lume = require 'lib.lume'
 
  local UIManager = class()
 
  scene = helium.scene.new(true)
  scene:activate()
+ [[
+ TRYING TO FIGURE OUT HOW THE BUTTON SHELL WORKS HERE IDK WHJAT IM DOING
 
+ local button = function()
+     local buttonState = useButton()
+
+     return function()
+         if buttonState.down() then
+             print('up')
+         else
+             print('down')
+         end
+         love.graphics.setColor(6/255,0.3,0.3)
+         love.graphics.rectangle('fill',0,0,view.w,view.h)
+         love.graphics.setColor(1,1,1)
+         love.graphics.print(param.text)
+         print(buttonState.over and 'Thanks!' or 'Hover over me...')
+     end
+ end
+
+ buttonCreator = helium(button)
+ ]]
 
  --globally store component factories used in our scenes
  elementCreator = helium(function(param,view)

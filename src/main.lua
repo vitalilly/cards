@@ -11,7 +11,6 @@ math.randomseed(os.time())
 
 function love.load()
     uimanager.loadScene('menu') --test: load "menu" scene (small rectangle)
-    uimanager.loadScene('game') --test: load "game" scene over it (big rectangle)
     gamestate.registerEvents()
     gamestate.switch(require('scenes/menu'):build())
 end
