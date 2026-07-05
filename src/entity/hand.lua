@@ -1,5 +1,7 @@
 local Entity = require 'core.entity'
 local slash = require 'entity.Cards.attacks.Slash'
+local deck = require 'entity.deck'
+local config = require 'conf'
 
 local hand = Entity:extend()
 
@@ -9,19 +11,19 @@ function hand:init(o) --Intitialise an instance of the card class
 
     self.idealPositions = o.idealPositions or {} --stores the ideal positions of the cards in the hand
     self.cards = o.cards or {}
-    self.deck = o.deck or {} --Set the deck that is associated with this hand
+    self.deck = o.deck or deck:new() --Set the deck that is associated with this hand
     self.wait = false
 
     self.deck = hand.testHand(20) --Test function to see if the hand is working
-    self:draw(5) --Testing
+    self:drawCards(10) --Testing
 end
 
 function hand:getIdealPositions() --Determines where a given card should be based on its index in the x plane.
-    local center = love.graphics.getWidth()/2
-    local spacing = 50
-    local cardWidth = 200
+    local center = config.gamew/2
+    local spacing = 20
+    local cardWidth = 100
     local leftPosition = 0
-    local leftLimit = 10
+    local leftLimit = 20
     local result = {}
 
     while leftPosition < leftLimit do
@@ -42,16 +44,16 @@ function hand:getIdealPositions() --Determines where a given card should be base
     end
 
     for i = #self.cards, 1, -1 do --The first card is last in the order and vice verca
-        local position = leftPosition + ((cardWidth + spacing) * i)
+        local position = leftPosition + ((cardWidth + spacing) * (i - 1))
         table.insert(result,position)
     end
     self.idealPositions = result
 end
 
 function hand.testHand(num) --Test function to see if the hand is working
-    local result = {}
+    local result = deck:new()
     for i = 1,num,1 do
-        table.insert(result,slash:new())
+        result:addCard(slash:new())
     end
     return result
 end
@@ -73,13 +75,16 @@ end
 
 function hand:draw() --Draw the cards in the hand
     self.wait = false
+    local speed = 4
 
     for i, v in ipairs(self.cards) do
+       
         if not self.wait then
+            v.x = self:snapToPlace(v.x,self.idealPositions[i],speed)
             if v.x < self.idealPositions[i] then --Move towards the goal
-                v.x = v.x + 1
+                v.x = v.x + speed
             elseif v.x > self.idealPositions[i] then
-                v.x = v.x - 1
+                v.x = v.x - speed
             end
             
             if v.x < 0 then
@@ -88,6 +93,15 @@ function hand:draw() --Draw the cards in the hand
 
         end
         v:draw()
+    end
+end
+
+function hand:snapToPlace(cardX,idealPos,sensitivity) --If the card is within a certain distance of its ideal position snap it to that position
+    local difference = math.abs(cardX - idealPos)
+    if difference <= sensitivity then
+        return idealPos
+    else
+        return cardX
     end
 end
 

@@ -2,6 +2,8 @@ local Entity = require 'core.entity'
 
 local card = Entity:extend()
 
+local config = require 'conf'
+
 function card:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
@@ -14,7 +16,7 @@ function card:init(o) --Intitialise an instance of the card class
     self.tag = o.tag or 0 --Describes what category this card falls into
     self.tagList = enum()
     self.x = -200
-    self.y = 0
+    self.y = config.gameh - config.cardHeight
 end
 
 function enum()

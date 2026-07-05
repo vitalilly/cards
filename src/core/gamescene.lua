@@ -7,9 +7,11 @@ local Pool = require 'core.pool'
 --push section
 local push = require 'lib.push' 
 
+local config = require 'conf'
+
 love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
   
-local gamew, gameh = 64, 36 
+local gamew, gameh = config.gamew, config.gameh
 local w, h = love.graphics.getDimensions()
 
 push:setupScreen(gamew, gameh, w, h, {
