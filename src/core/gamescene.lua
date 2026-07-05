@@ -73,12 +73,14 @@ end
 
 local draw = GameScene.draw
 function GameScene:draw()
+    scene:draw()
     love.graphics.setShader(shader)
     push:start()
     self.camera:set()
     draw(self)
     self.camera:unset()
     push:finish()
+    love.graphics.setShader()
 end
 
 --- creates a new group and the associated add/remove helper methods
