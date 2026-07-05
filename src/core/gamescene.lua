@@ -4,45 +4,10 @@ local lume = require 'lib.lume'
 local Camera = require 'core.camera'
 local Pool = require 'core.pool'
 
---push section
-local push = require 'lib.push' 
-
-local config = require 'conf'
-
-love.graphics.setDefaultFilter("nearest", "nearest") --disable blurry scaling
-  
-local gamew, gameh = config.gamew, config.gameh
-local w, h = love.graphics.getDimensions()
-
-push:setupScreen(gamew, gameh, w, h, {
-    fullscreen = false,
-    resizable = true
-    ,pixelperfect = true
-    ,canvas = true
-})
-
---palette handling
-local palette = require 'core.palette'
-local palette = palette:select(1)
-local cpalette = {unpack(palette)}
-for i = 1,8 do 
-    cpalette[i] = {love.math.colorFromBytes(palette[i])}
-end
-
---shader handling
-local shader = love.graphics.newShader(require 'core.shader') 
-shader:send("colors", unpack(cpalette))
-
---canvas handling (for multi-layered images: unused for now)
---push:setupCanvas({
---    {name = 'main_canvas'}
---})
-
 --resize callback override
 function love.resize(w,h)
     push:resize(w,h)
 end
-
 --
 
 local GameScene = Pool:extend()
@@ -54,7 +19,7 @@ function GameScene:init()
     self.camera = Camera()
     self:addAs('timer', require('core.timer').global)
     self:setup()
-    
+    --PUSH NOT HANDLING SHADER BECAUSE OF WEIRD RENDERING ISSUES
     --push:setShader( shader ) --this is done in love.load() in the example: must be done during runtime?
 end
 
@@ -68,14 +33,15 @@ end
 local update = Pool.update
 function GameScene:update(dt)
     update(self, dt)
+    scene:update(dt)
     for _, action in ipairs(self.updateActions) do action(self, dt) end
 end
 
 local draw = GameScene.draw
 function GameScene:draw()
-    scene:draw()
-    love.graphics.setShader(shader)
+    love.graphics.setShader(shader) --shader handled globally because of push issues
     push:start()
+    scene:draw() -- draw helium ui
     self.camera:set()
     draw(self)
     self.camera:unset()
