@@ -104,14 +104,18 @@ function hand:draw() --Draw the cards in the hand
 end
 
 function hand:update(dt) --Update to be used whenever the number of cards in hand changes
-    self:selectionBehavior()
-    self:moveToIdeal()
+    local X, Y = love.mouse.getPosition()
+    local mouseX,mouseY = push:toGame(X,Y)
+
+    self:selectionBehavior(mouseX,mouseY)
+    self:moveToIdeal(mouseX,mouseY)
 end
 
-function hand:moveToIdeal()
+function hand:moveToIdeal(mouseX,mouseY)
     self.wait = false --Cards on screen may have to wait for the card ahead of them to be visible before their behavior kicks in
-    local speed = 6
+    local speed = 20
     local outtaTheWay = 0
+    local leftDown = love.mouse.isDown(1)
     if self.spacing < 0 then
         outtaTheWay = -self.spacing --We're gonna move out of the way the same distance that the cards are overlapping    
     end
@@ -122,10 +126,23 @@ function hand:moveToIdeal()
         if not self.wait then
             local idealposx = self.idealPositions[i]
             local idealposy = config.gameh - config.cardHeight
+
+            if not leftDown then
+                v.grabbed = false
+                if mouseY < idealposy + heightExtension + config.cardHeight/2 then
+                    --TODO card play implementation
+                end
+            end
             
             if selectedIndex > -1 then
                 if i == selectedIndex then
-                    idealposy = idealposy - heightExtension --Move the card up if it is selected
+                    if leftDown then --left click
+                        idealposx = mouseX - config.cardWidth/2
+                        idealposy = mouseY - config.cardHeight/2
+                        v.grabbed = true
+                    else
+                        idealposy = idealposy - heightExtension --Move the card up if it is selected
+                    end
                 elseif i < selectedIndex then
                     idealposx = idealposx + outtaTheWay
                 else
@@ -140,6 +157,8 @@ function hand:moveToIdeal()
                 v.x = v.x + speed
             elseif v.x > idealposx then
                 v.x = v.x - speed
+            else
+                v.entered = true
             end
 
             if v.y < idealposy then
@@ -158,24 +177,23 @@ end
 
 function hand:getSelectedIndex()
     for i, v in ipairs(self.cards) do
-        if v.selected and v.x == self.idealPositions[i] then
+        if v.selected and v.entered then
             return i
         end
     end
     return -1
 end
 
-function hand:selectionBehavior()
-    local X, Y = love.mouse.getPosition()
-    local mouseX,mouseY = push:toGame(X,Y)
-    
-    
-    for i, v in ipairs(self.cards) do
-        if self.hitboxes[i]:rectangle(mouseX,mouseY) then
-            v.selected = true
-        else
-            v.selected = false
+function hand:selectionBehavior(mouseX,mouseY)
+
+    for _,v in ipairs(self.cards) do
+        if v.grabbed then --If any of the cards have been grabbed we gotta skip this
+            return
         end
+    end
+
+    for i, v in ipairs(self.cards) do
+        v.selected = self.hitboxes[i]:rectangle(mouseX,mouseY)
     end
 end
 
