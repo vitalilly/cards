@@ -1,13 +1,13 @@
 --ui manager using helium
 
- local class = require 'utils.class'
+ --local class = require 'utils.class'
  local helium = require 'helium'
  local useState = require 'helium.hooks.state'--add states to components
  local input = require 'helium.core.input'
  local useButton = require 'helium.shell.button' --button shell
  local lume = require 'lib.lume'
 
- local UIManager = class()
+ local UIManager = {}
 
  scene = helium.scene.new(true)
  scene:activate()

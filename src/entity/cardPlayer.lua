@@ -106,5 +106,8 @@ end
 function cardPlayer:draw()
     self.hand:draw()
 end
+function cardPlayer:update(dt)
+    self.hand:update(dt)
+end
 
 return cardPlayer

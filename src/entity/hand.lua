@@ -5,6 +5,7 @@ local config = require 'conf'
 local hitbox = require 'entity.hitbox'
 
 local hand = Entity:extend()
+local heightExtension = config.cardHeight + 5 --Defines how high the cards raise
 
 function hand:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
@@ -16,19 +17,23 @@ function hand:init(o) --Intitialise an instance of the card class
     self.idealPositions = o.idealPositions or self:getIdealPositions() --stores the ideal positions of the cards in the hand
     self.hitboxes = o.hitboxes or self:gethitboxes() --stores the hitboxes of the cards in the hand
 
+    self.leftPosition = o.leftPosition or 0 --Defines the boundaries between the left and right of the hand for empty
+    self.spacing = o.spacing or 0
+
     self.deck = hand.testHand(20) --Test function to see if the hand is working
     self:drawCards(10) --Testing
 end
-    local leftLimit = 20
-    local heightExtension = config.cardHeight + 5
+
+    
+    
 
 function hand:gethitboxes()
     local result = {}
-    local heightBuffer = 5
+    local heightBuffer = 5 --Extra space ontop of the card that can still detect the mouse
     for i = #self.cards,1,-1 do
-        local xDivision =  (((config.gamew - (leftLimit * 2))/#self.cards) * (i-1)) + leftLimit
+        local xDivision =  (((config.gamew - (self.leftPosition * 2))/#self.cards) * (i-1)) + self.leftPosition
         local yDivision = config.gameh - (config.cardHeight + heightExtension + heightBuffer)
-        local locWidth = (config.gamew - (leftLimit * 2))/#self.cards
+        local locWidth = (config.gamew - (self.leftPosition * 2))/#self.cards
         local locHeight = config.cardHeight + heightExtension + heightBuffer
         local hitbox = hitbox:new({x = xDivision, y = yDivision, width = locWidth, height = locHeight})
         table.insert(result,hitbox)
@@ -39,30 +44,31 @@ end
 function hand:getIdealPositions() --Determines where a given card should be based on its index in the x plane.
     local center = config.gamew/2
     local cardWidth = config.cardWidth
-    local leftPosition = 0
-    local spacing = 20
+    self.leftPosition = 0
+    local leftLimit = 20 --The limit for how far left the cards are allowed to be
+    self.spacing = 20 --How much space is inbetween individual cards. This value may be negative in which case the cards overlap.
     
     local result = {}
 
-    while leftPosition < leftLimit do
+    while self.leftPosition < leftLimit do
 
         if #self.cards % 2 == 0 then --If there is an even number of cards in the hand
-            --remove the spacing/2 because it will be split in half.
-            leftPosition = center - (spacing/2) - (#self.cards/2 * cardWidth) - (spacing * (#self.cards/2 - 1))
+            --remove the self.spacing/2 because it will be split in half.
+            self.leftPosition = center - (self.spacing/2) - (#self.cards/2 * cardWidth) - (self.spacing * (#self.cards/2 - 1))
 
         else --If there is an odd number of cards in the hand
         --remove the cardwith/2 because a card will be in the center and the rest will be split evenly on either side
-            leftPosition = center - (cardWidth/2) - ((#self.cards - 1)/2 * cardWidth) - (spacing * ((#self.cards - 1)/2))
+            self.leftPosition = center - (cardWidth/2) - ((#self.cards - 1)/2 * cardWidth) - (self.spacing * ((#self.cards - 1)/2))
         end
 
-        if leftPosition < leftLimit then
-            spacing = spacing - 10
+        if self.leftPosition < leftLimit then
+            self.spacing = self.spacing -1
         end
 
     end
 
     for i = #self.cards, 1, -1 do --The first card is last in the order and vice verca
-        local position = leftPosition + ((cardWidth + spacing) * (i - 1))
+        local position = self.leftPosition + ((cardWidth + self.spacing) * (i - 1))
         table.insert(result,position)
     end
     return result
@@ -97,23 +103,34 @@ function hand:draw() --Draw the cards in the hand
     end
 end
 
-function hand:update(dt) --Update the cards in the hand
+function hand:update(dt) --Update to be used whenever the number of cards in hand changes
     self:selectionBehavior()
     self:moveToIdeal()
 end
 
 function hand:moveToIdeal()
-    self.wait = false
+    self.wait = false --Cards on screen may have to wait for the card ahead of them to be visible before their behavior kicks in
     local speed = 6
-    local movement 
+    local outtaTheWay = 0
+    if self.spacing < 0 then
+        outtaTheWay = -self.spacing --We're gonna move out of the way the same distance that the cards are overlapping    
+    end
+    
+    local selectedIndex = self:getSelectedIndex()
 
     for i, v in ipairs(self.cards) do
         if not self.wait then
             local idealposx = self.idealPositions[i]
             local idealposy = config.gameh - config.cardHeight
             
-            if v.selected and v.x == idealposx then
-                idealposy = idealposy - heightExtension --Move the card up if it is selected
+            if selectedIndex > -1 then
+                if i == selectedIndex then
+                    idealposy = idealposy - heightExtension --Move the card up if it is selected
+                elseif i < selectedIndex then
+                    idealposx = idealposx + outtaTheWay
+                else
+                    idealposx = idealposx - outtaTheWay
+                end
             end
 
             v.x = self:snapToPlace(v.x,idealposx,speed)
@@ -137,6 +154,15 @@ function hand:moveToIdeal()
 
         end
     end
+end
+
+function hand:getSelectedIndex()
+    for i, v in ipairs(self.cards) do
+        if v.selected and v.x == self.idealPositions[i] then
+            return i
+        end
+    end
+    return -1
 end
 
 function hand:selectionBehavior()
