@@ -18,7 +18,9 @@ function card:init(o) --Intitialise an instance of the card class
     self.tagList = enum()
     self.x = -config.cardWidth - 20
     self.y = config.gameh - config.cardHeight
-    self.selected = o.selected or false
+    self.selected = o.selected or false --The card is being hovered over
+    self.grabbed = o.grabbed or false --The card is being grabbed
+    self.entered = o.entered or false --The card has been placed in the hand correctly
 end
 
 function enum()
