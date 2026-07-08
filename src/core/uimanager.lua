@@ -11,47 +11,23 @@
 
  scene = helium.scene.new(true)
  scene:activate()
- --[[
- TRYING TO FIGURE OUT HOW THE BUTTON SHELL WORKS HERE IDK WHJAT IM DOING
 
- local button = function()
+ buttonCreator = helium(function(param,view)
      local buttonState = useButton()
-
-     return function()
-         if buttonState.down() then
+     input('clicked', function()
+         if not buttonState.down then
              print('up')
          else
              print('down')
-         end
-         love.graphics.setColor(6/255,0.3,0.3)
-         love.graphics.rectangle('fill',0,0,view.w,view.h)
-         love.graphics.setColor(1,1,1)
-         love.graphics.print(param.text)
-         print(buttonState.over and 'Thanks!' or 'Hover over me...')
-     end
- end
-
- buttonCreator = helium(button)
- ]]
-
- --globally store component factories used in our scenes
- elementCreator = helium(function(param,view)
-     local elementState = useState({down = false})
-     input('clicked',function()
-        elementState.down = not elementState.down
-         if elementState.down then
-             print('down')
-         else
-             print('up')
          end
      end)
 
      return function()
-         --visual aspect of the component: load sprites here
-         love.graphics.setColor(6/255,0.3,0.3)
+         love.graphics.setColor(8/255,0.4,0.6)
          love.graphics.rectangle('fill',0,0,view.w,view.h)
          love.graphics.setColor(1,1,1)
          love.graphics.print(param.text)
+         --print(buttonState.over and 'Thanks!' or 'Hover over me...')
      end
  end)
 

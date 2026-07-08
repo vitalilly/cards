@@ -3,8 +3,8 @@ require 'extensions'
 
 local gamestate = require 'lib.gamestate'
 
-uimanager = require 'core.uimanager' --ui manager using helium
 require 'core.pushmanager' -- push & shader management
+uimanager = require 'core.uimanager' --ui manager using helium
 require 'core.soundmanager'
 require 'sounds'
 math.randomseed(os.time())

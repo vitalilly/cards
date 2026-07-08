@@ -45,8 +45,8 @@ function GameScene:draw()
     self.camera:set()
     draw(self)
     self.camera:unset()
-    scene:draw() -- draw helium ui scene
     push:finish()
+    scene:draw()
     love.graphics.setShader() --reset shader to default
 end
 
