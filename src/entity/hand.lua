@@ -16,6 +16,7 @@ function hand:init(o) --Intitialise an instance of the card class
     self.wait = false
     self.idealPositions = o.idealPositions or self:getIdealPositions() --stores the ideal positions of the cards in the hand
     self.hitboxes = o.hitboxes or self:gethitboxes() --stores the hitboxes of the cards in the hand
+    self.player = o.player or {} --Reference to the player who owns this hand.
 
     self.leftPosition = o.leftPosition or 0 --Defines the boundaries between the left and right of the hand for empty
     self.spacing = o.spacing or 0
@@ -117,6 +118,7 @@ function hand:moveToIdeal(mouseX,mouseY)
     local outtaTheWay = 0
     local leftDown = love.mouse.isDown(1) --left click
     local selectedIndex = self:getSelectedIndex() --The index of the card that has been selected
+    local dropBuffer = 50 -- Amount of space above where the card is extended where the card may be dropped without playing it
 
     if self.spacing < 0 then
         outtaTheWay = -self.spacing --We're gonna move out of the way the same distance that the cards are overlapping    
@@ -127,19 +129,25 @@ function hand:moveToIdeal(mouseX,mouseY)
             local idealposx = self.idealPositions[i]
             local idealposy = config.gameh - config.cardHeight
 
-            if not leftDown then
+            if not leftDown and v.grabbed then
                 v.grabbed = false
-                if mouseY < idealposy + heightExtension + config.cardHeight/2 then
-                    --TODO card play implementation
+                if mouseY < idealposy - heightExtension - config.cardHeight/2 - dropBuffer then --Playing a card logic
+                    if self.player:playCard(v) then
+                        table.remove(self.cards,i)
+                        self:updateCardTables()
+                    end
                 end
             end
             
             if selectedIndex > -1 then
                 if i == selectedIndex then --Selected and clicked on
-                    if leftDown then 
-                        idealposx = mouseX - config.cardWidth/2
-                        idealposy = mouseY - config.cardHeight/2
+                    if leftDown then
+                        --idealposx = mouseX - config.cardWidth/2
+                        --idealposy = mouseY - config.cardHeight/2
+                        v.x = mouseX - config.cardWidth/2
+                        v.y = mouseY - config.cardHeight/2
                         v.grabbed = true
+                        return
                     else --Selected but not clicked on
                         idealposy = idealposy - heightExtension --Move the card up if it is selected
                     end

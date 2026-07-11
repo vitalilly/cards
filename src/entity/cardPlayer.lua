@@ -9,7 +9,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
 
     self.health = o.health or 10
     self.deck = o.deck or {}
-    self.hand = o.hand or hand:new()
+    self.hand = o.hand or hand:new({player = self})
 
     self.strength = o.strength or 0 --Added onto all damage this player does
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -18,16 +18,34 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effectsSOT = o.effectsSOT or {} --All start of turn effects stored as a table
     self.effectsEOT = o.effectsEOT or {} --All end of turn effects stored as a table
     self.minions = o.minions or {} --List of all minions the player has
+
     self.opponents = o.opponents or {} --list of all other players
+    self.selectedOpponent = o.selectedOpponent or 1 --The index of the player thats being targeted and rendered
+
     self.cardQueue = o.cardQueue or {} --Lists all the cards that will play once the player has confirmed their turn
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
-    self.maxCardsPlayed = o.maxCardsPlayed or 1 --max num allowed
+    self.maxCardsPlayed = o.maxCardsPlayed or 10 --max num allowed. Set to 10 for testing
 end
 
-function cardPlayer:playCard(card,target) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply
+function cardPlayer:playCard(card) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply. Returns if the card was played or not
+
+    if self.cardsPlayed >= self.maxCardsPlayed then --Check to see if the player can even play anymore cards
+        return false
+    end
+
+    self.cardsPlayed = self.cardsPlayed + 1
+
+    local target
+    if card.targets then
+        target = self.opponents[self.selectedOpponent]
+    else
+        target = nil
+    end
+
     local tuple = {Card = card,Target = target}
     table.insert(self.cardQueue,tuple)
+    return true
 end
 
 function cardPlayer:checkForEffects(tuple)
