@@ -1,5 +1,6 @@
 local Entity = require 'core.entity'
 local hand = require 'entity.hand'
+local deck = require 'entity.deck'
 
 local cardPlayer = Entity:extend() --Player object that has this weird name because a player.lua already exists
 
@@ -8,8 +9,8 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     o = o or {} --Give a blank table if no object is given
 
     self.health = o.health or 10
-    self.deck = o.deck or {}
-    self.hand = o.hand or hand:new({player = self})
+    self.deck = o.deck or deck:new()
+    self.hand = o.hand or hand:new({player = self, deck = self.deck})
 
     self.strength = o.strength or 0 --Added onto all damage this player does
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -38,7 +39,7 @@ function cardPlayer:playCard(card) --Adds a tuple containing the card played and
 
     local target
     if card.targets then
-        target = self.opponents[self.selectedOpponent]
+        target = self.opponents[self.selectedOpponent] --Players will be able to switch between all the players in their view with an arrow or smth. The player who is currently in view will be targetted.
     else
         target = nil
     end
@@ -47,6 +48,8 @@ function cardPlayer:playCard(card) --Adds a tuple containing the card played and
     table.insert(self.cardQueue,tuple)
     return true
 end
+
+--TODO Add arrows to the screen that allow the player to cycle through opponents for the purpose of understanding the field and targeting.
 
 function cardPlayer:checkForEffects(tuple)
     for i,v in ipairs(self.effects) do

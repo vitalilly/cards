@@ -7,12 +7,17 @@ local w, h = love.graphics.getDimensions()
 
 local S = SceneBuilder()
 
-S:addObjectAs('hand',{
-    script = 'entity.cardPlayer',
-    arguments = {
-        scene = S.scene,    
-    }
-})
+function S:addPlayers(num) -- num is the number of players to create in this scene
+    S:addObjectAs('turnManager', 
+    {script = 'entity.turnManager',
+    arguments = {numPlayers = num,
+    scene = S.scene,}})
+end
+
+function S:buildCardGame(num) --Number of players to create
+    self:addPlayers(num)
+    return self:build()
+end
 
 S:addObjectAs('knight',{
     script = 'entity.player',
