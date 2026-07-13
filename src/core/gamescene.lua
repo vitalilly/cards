@@ -46,7 +46,7 @@ function GameScene:draw()
     draw(self)
     self.camera:unset()
     push:finish()
-    scene:draw()
+    scene:draw() --draw UI over everything
     love.graphics.setShader() --reset shader to default
 end
 

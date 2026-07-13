@@ -23,6 +23,10 @@
          end
      end)
 
+     if onClick then
+        print("a")
+     end
+
      return function()
          love.graphics.setColor(8/255,0.4,0.6)
          love.graphics.rectangle('fill',0,0,view.w,view.h)

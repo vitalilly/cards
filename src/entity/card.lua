@@ -3,7 +3,7 @@ local Entity = require 'core.entity'
 local card = Entity:extend()
 
 local config = require 'conf'
-local assetManager = require 'core.assetManager'
+local assetManager = require 'core.assetmanager'
 
 function card:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
