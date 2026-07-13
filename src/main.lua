@@ -12,7 +12,7 @@ math.randomseed(os.time())
 local cardGame = require('scenes/menu')
 
 function love.load()
-    uimanager.loadScene('menu') --test: load "menu" scene (small rectangle)
+--    uimanager.loadScene('menu') --test: load "menu" scene (small rectangle)
     gamestate.registerEvents()
     gamestate.switch(cardGame:buildCardGame(1))
 

@@ -435,6 +435,11 @@ function element:draw(x, y, w, h)
 	end
 end
 
+--lilly's attempt to accept table of elements, doesn't work
+function element:drawView(t)
+    element:draw(t.x or 0, t.y or 0, t.w or 0, t.h or 0)
+end
+
 function element:getSize()
 	return self.view.w, self.view.h
 end
