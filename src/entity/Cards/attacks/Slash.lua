@@ -1,7 +1,7 @@
 local card = require 'entity.card'
 
 local slash = card:extend()
-local assetManager = require 'core.assetManager'
+local assetManager = require 'core.assetmanager'
 
 function slash:init(o)
     card.init(self,o)
