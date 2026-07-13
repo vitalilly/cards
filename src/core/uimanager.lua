@@ -12,7 +12,8 @@
  scene = helium.scene.new(true)
  scene:activate()
 
- buttonCreator = helium(function(param,view)
+ buttonCreator = helium(
+    function(param,view)
      local buttonState = useButton()
      input('clicked', function()
          if not buttonState.down then
@@ -30,6 +31,24 @@
          --print(buttonState.over and 'Thanks!' or 'Hover over me...')
      end
  end)
+
+endTurn = helium(
+    function(view,player)
+        input('clicked', 
+        function()
+            local ID = player.ID
+            local cardsPlayed = player.cardQueue
+            local turnManager = player.turnManager
+            turnManager:submitTurn(ID,cardsPlayed)
+        end)    
+
+    return function()
+        love.graphics.setColor(8/255,0.4,0.6)
+        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.setColor(1,1,1)
+        love.graphics.print("End Turn")
+    end
+end)
 
  --store all scenes in  memory
  scenes = {}

@@ -1,5 +1,4 @@
 local Entity = require 'core.entity'
-local slash = require 'entity.Cards.attacks.Slash'
 local deck = require 'entity.deck'
 local config = require 'conf'
 local hitbox = require 'entity.hitbox'
@@ -20,13 +19,7 @@ function hand:init(o) --Intitialise an instance of the card class
 
     self.leftPosition = o.leftPosition or 0 --Defines the boundaries between the left and right of the hand for empty
     self.spacing = o.spacing or 0
-
-    self.deck = hand.testHand(20) --Test function to see if the hand is working
-    self:drawCards(10) --Testing
 end
-
-    
-    
 
 function hand:gethitboxes()
     local result = {}
@@ -71,14 +64,6 @@ function hand:getIdealPositions() --Determines where a given card should be base
     for i = #self.cards, 1, -1 do --The first card is last in the order and vice verca
         local position = self.leftPosition + ((cardWidth + self.spacing) * (i - 1))
         table.insert(result,position)
-    end
-    return result
-end
-
-function hand.testHand(num) --Test function to see if the hand is working
-    local result = deck:new()
-    for i = 1,num,1 do
-        result:addCard(slash:new())
     end
     return result
 end

@@ -1,6 +1,6 @@
 do
-    x,y = 200,200
-    w,h = 100,30
+    local x,y = 200,200
+    local w,h = 100,30
     w,h = push:toGame(w,h)
     x,y = push:toGame(x,y)
     print(x,y)

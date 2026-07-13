@@ -1,18 +1,26 @@
 local Entity = require 'core.entity'
 local hand = require 'entity.hand'
 local deck = require 'entity.deck'
+local slash = require 'entity.Cards.attacks.Slash'
+local globals = require 'globals'
 
 local cardPlayer = Entity:extend() --Player object that has this weird name because a player.lua already exists
+
+local cardsToDraw = 5 --Global that governs how many cards players draw each turn
 
 function cardPlayer:init(o) --Intitialise an instance of the card class
     Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
 
+    self.ID = o.ID or -1
+    self.turnManager = o.turnManager or {}
+    self.playOver = o.playOver or false
+
     self.health = o.health or 10
     self.deck = o.deck or deck:new()
+    self.deck = cardPlayer:testHand(20) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
 
-    self.strength = o.strength or 0 --Added onto all damage this player does
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
     self.allSourcesOfDamage = o.allSourcesOfDamage or {} --Table that will store all opponents damage against this player. We will then take the largest value in this table as the pending damage
     self.currentBlock = o.currentBlock or 0 --Damage that will be prevented 
@@ -27,6 +35,42 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
     self.maxCardsPlayed = o.maxCardsPlayed or 10 --max num allowed. Set to 10 for testing
+
+    self:drawEndTurn()
+end
+
+function cardPlayer:drawEndTurn()
+    if self.ID ~= globals.ID then
+        return
+    end
+
+    local x,y = 400,200
+    local localW,localH = 100,30
+    localW,localH = push:toGame(localW,localH)
+    x,y = push:toGame(x,y)
+    local view = {h = localH, w = localW}
+    local b1 = endTurn(view,self)
+    b1:draw(x,y)--TODO, work out why this doesnt work
+end
+
+function cardPlayer:testHand(num) --Test function to see if the hand is working
+    local result = deck:new()
+    for i = 1,num,1 do
+        result:addCard(slash:new({player = self}))
+    end
+    return result
+end
+
+function cardPlayer:startTurn()
+    self:checkForSOT()
+end
+
+function cardPlayer:startPlay()
+    self.hand:drawCards(cardsToDraw)
+end
+
+function cardPlayer:endTurn()
+    self:checkForEOT()
 end
 
 function cardPlayer:playCard(card) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply. Returns if the card was played or not
@@ -52,33 +96,26 @@ end
 --TODO Add arrows to the screen that allow the player to cycle through opponents for the purpose of understanding the field and targeting.
 
 function cardPlayer:checkForEffects(tuple)
-    for i,v in ipairs(self.effects) do
+    for _,v in ipairs(self.effects) do
         v.effect(tuple)
     end
 end
 
 function cardPlayer:checkForSOT()
-    for i,v in ipairs(self.effectsSOT) do
+    for _,v in ipairs(self.effectsSOT) do
         v.SOT()
     end
 end
 
 function cardPlayer:checkForEOT()
-    for i,v in ipairs(self.effectsEOT) do
+    for _,v in ipairs(self.effectsEOT) do
         v.EOT()
     end
 end
 
 
 function cardPlayer:executeCards() --Plays all the cards on the queue
-    for i, v in ipairs(self.cardQueue) do
-        if v.Target == nil then
-            v.Card.play()
-        else
-            v.Card.playTarget(v.Target)
-        end
-        self:checkForEffects(v)
-    end
+    
     self.cardQueue = {} --Reset the queue
 end
 
