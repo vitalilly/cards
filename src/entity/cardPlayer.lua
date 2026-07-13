@@ -36,21 +36,21 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
     self.maxCardsPlayed = o.maxCardsPlayed or 10 --max num allowed. Set to 10 for testing
 
-    self:drawEndTurn()
+    self.endTurnButton = self:makeEndTurn()
 end
 
-function cardPlayer:drawEndTurn()
+function cardPlayer:makeEndTurn()
     if self.ID ~= globals.ID then
         return
     end
 
-    local x,y = 400,200
+    local localX,localY = 400,200
     local localW,localH = 100,30
     localW,localH = push:toGame(localW,localH)
-    x,y = push:toGame(x,y)
-    local view = {h = localH, w = localW}
-    local b1 = endTurn(view,self)
-    b1:draw(x,y)--TODO, work out why this doesnt work
+    localX,localY = push:toGame(localX,localY)
+    local view = {h = localH, w = localW,x = localX, y = localY}
+    local endTurnButton = endTurn(view,self)
+    return endTurnButton
 end
 
 function cardPlayer:testHand(num) --Test function to see if the hand is working
@@ -163,6 +163,7 @@ end
 
 function cardPlayer:draw()
     self.hand:draw()
+    self.endTurnButton:draw()
 end
 function cardPlayer:update(dt)
     self.hand:update(dt)

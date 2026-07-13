@@ -48,7 +48,7 @@ endTurn = helium(
 
     return function()
         love.graphics.setColor(8/255,0.4,0.6)
-        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.rectangle('fill',view.x,view.y,view.w,view.h)
         love.graphics.setColor(1,1,1)
         love.graphics.print("End Turn")
     end
