@@ -50,6 +50,7 @@ function cardPlayer:makeEndTurn()
     localX,localY = push:toGame(localX,localY)
     local view = {h = localH, w = localW,x = localX, y = localY}
     local endTurnButton = endTurn(self, view.w, view.h)
+    endTurnButton:draw(view.x,view.y)
     endTurnButton.view = view
     return endTurnButton
 end
@@ -164,7 +165,6 @@ end
 
 function cardPlayer:draw()
     self.hand:draw()
-    self.endTurnButton:draw(unpack(self.endTurnButton.view))
 end
 function cardPlayer:update(dt)
     self.hand:update(dt)

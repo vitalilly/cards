@@ -8,6 +8,7 @@ local Player = Entity:extend()
 
 
 -- sprite loading
+--local atlasFront = love.graphics.newImage('assets/player/2/atlas1.PNG')
 local front = 
 {
    love.graphics.newImage('assets/player/2/1.PNG'),
