@@ -9,8 +9,8 @@ local cardPlayer = Entity:extend() --Player object that has this weird name beca
 local cardsToDraw = 5 --Global that governs how many cards players draw each turn
 
 function cardPlayer:init(o) --Intitialise an instance of the card class
-    Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
+    Entity.init(self,o)
 
     self.ID = o.ID or -1
     self.turnManager = o.turnManager or {}
@@ -72,6 +72,7 @@ end
 
 function cardPlayer:endTurn()
     self:checkForEOT()
+    self.hand:discardHand()
 end
 
 function cardPlayer:playCard(card) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply. Returns if the card was played or not

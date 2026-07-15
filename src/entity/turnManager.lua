@@ -5,6 +5,9 @@ local globals = require 'globals'
 local turnManager = Entity:extend()
 
 function turnManager:init(o)
+    o = o or {}
+    Entity.init(self,o)
+   
     self.numPlayers = o.numPlayers or 2
     self.players = self:makePlayers()
     self.cardQueue = {}
@@ -14,9 +17,12 @@ end
 
 function turnManager:makePlayers()
     local output = {}
-    for i= 1,self.numPlayers,1 do
+    for i= 1,self.numPlayers or 2 do
         local player = cardPlayer:new({ID = i, turnManager = self})
-        output[i] = player
+        if i == 2 then
+            player.playOver = true
+        end
+        table.insert(output,player)
     end
     return output
 end
@@ -35,6 +41,7 @@ function turnManager:playPhase()
 end
 
 function turnManager:submitTurn(ID,cardsPlayed)
+    print("The button works")
     if self.players[ID].playOver then
         return
     end

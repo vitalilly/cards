@@ -6,9 +6,9 @@ local hitbox = require 'entity.hitbox'
 local hand = Entity:extend()
 local heightExtension = config.cardHeight + 5 --Defines how high the cards raise
 
-function hand:init(o) --Intitialise an instance of the card class
-    Entity.init(self,o)
+function hand:init(o) 
     o = o or {} --Give a blank table if no object is given
+    Entity.init(self,o)
 
     self.cards = o.cards or {}
     self.deck = o.deck or deck:new() --Set the deck that is associated with this hand
@@ -78,7 +78,7 @@ end
 
 function hand:discardHand() --Put the entire hand into the discard pile
     for i, v in ipairs(self.cards) do
-        self.deck.discard(v)
+        self.deck:discard(v)
     end
     self.cards = {}
 end
@@ -119,6 +119,7 @@ function hand:moveToIdeal(mouseX,mouseY)
                 if mouseY < idealposy - heightExtension - config.cardHeight/2 - dropBuffer then --Playing a card logic
                     if self.player:playCard(v) then
                         table.remove(self.cards,i)
+                        self.deck:discard(v)
                         self:updateCardTables()
                     end
                 end

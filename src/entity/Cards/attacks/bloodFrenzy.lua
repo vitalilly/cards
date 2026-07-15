@@ -3,8 +3,8 @@ local card = require 'entity.card'
 local bloodFrenzy = card:extend()
 
 function bloodFrenzy:init(o)
-    card.init(self,o)
     o = o or {}
+    card.init(self,o)
 
     self.title = "Blood Frenzy"
     self.targets = true
