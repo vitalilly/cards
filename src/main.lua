@@ -6,6 +6,7 @@ local gamestate = require 'lib.gamestate'
 require 'core.pushmanager' -- push & shader management
 uimanager = require 'core.uimanager' --ui manager using helium
 require 'core.soundmanager'
+assetmanager = require 'core.assetmanager'
 require 'sounds'
 math.randomseed(os.time())
 
