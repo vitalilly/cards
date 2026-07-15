@@ -9,7 +9,7 @@ local Player = Entity:extend()
 
 -- sprite loading
 local front = assetmanager.sprites.units.knight
-local quads = assetmanager.quads
+local quads = assetmanager.quads.rows[1]
 
 function Player:init(t)
 	Entity.init(self,t)

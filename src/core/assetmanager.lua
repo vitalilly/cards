@@ -15,9 +15,11 @@ assetManager.sprites = {
 local atlasDimensions = {
     default = {258,34}
 }
-assetManager.quads = {}
+--quads!! hierarchy is quads -> dimensions -> rows[quads 1-8]
+--but dimensions is omitted because we only have one atlas lol
+assetManager.quads = {rows = {[1] = {} } }
 for i = 1,8 do
-    assetManager.quads[i] = love.graphics.newQuad(32*(i-1),1,32,32,unpack(atlasDimensions.default)) 
+    assetManager.quads.rows[1][i] = love.graphics.newQuad(32*(i-1),1,32,32,unpack(atlasDimensions.default)) 
 end
 
 --print to debug what the unpack outputs <3 (IT WORKS HERE !!)
