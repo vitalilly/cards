@@ -6,8 +6,8 @@ local config = require 'conf'
 local assetManager = require 'core.assetmanager'
 
 function card:init(o) --Intitialise an instance of the card class
-    Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
+    Entity.init(self,o)
 
     self.title = o.title or ""
     self.image = o.image or assetManager:getCardArt("Placeholder")

@@ -3,8 +3,8 @@ local Entity = require 'core.entity'
 local deck = Entity:extend()
 
 function deck:init(o) --Intitialise an instance of the card class
-    Entity.init(self,o)
     o = o or {} --Give a blank table if no object is given
+    Entity.init(self,o)
 
     self.trueCards = o.trueCards or {} --Stores what the players deck looks like regardless of the current game state
     self.cards = o.cards or {}
