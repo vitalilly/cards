@@ -28,7 +28,7 @@ function enum()
 end
 
 function card:damage(x,target) --Deal x damage to target player
-        target.allSourcesOfDamage[self.player] = target.allSourcesOfDamage[self.player] + x --We use a key value pair using the player who played this card as the key and the amount of damage as the value.
+    target.allSourcesOfDamage[self.player] = target.allSourcesOfDamage[self.player] + x --We use a key value pair using the player who played this card as the key and the amount of damage as the value.
 end
 
 function card:block(x) --block for x

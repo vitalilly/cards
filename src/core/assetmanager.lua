@@ -1,5 +1,8 @@
 local class = require 'utils.class'
-local assetManager = {}
+local assetManager = {sprites = {},
+buttons = {},
+cardArt = {},
+players = {}}
 
 assetManager.sprites = {
     units = {
@@ -25,8 +28,20 @@ end
 --print to debug what the unpack outputs <3 (IT WORKS HERE !!)
 --print(unpack(atlasDimensions.default))
 
+assetManager.buttons = {
+    ["LeftArrow"] = love.graphics.newImage('assets/buttons/leftArrow.png'),
+    ["RightArrow"] = love.graphics.newImage('assets/buttons/rightArrow.png')
+}
+
 assetManager.cardArt = {
     ["Placeholder"] = love.graphics.newImage('assets/cardArt/Placeholder.png'),
+}
+
+assetManager.players = {
+    ["Player1"] = love.graphics.newImage('assets/player/player1.png'),
+    ["Player2"] = love.graphics.newImage('assets/player/player2.png'),
+    ["Player3"] = love.graphics.newImage('assets/player/player3.png'),
+    ["Player4"] = love.graphics.newImage('assets/player/player4.png')
 }
 
 function assetManager:getCardArt(cardName)

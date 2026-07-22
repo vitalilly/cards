@@ -2,6 +2,9 @@ local config = {}
 
 config.gamew = 640
 config.gameh = 360
+config.windoww = 1280
+config.windowh = 720
+
 config.cardHeight = 45
 config.cardWidth = 100
 

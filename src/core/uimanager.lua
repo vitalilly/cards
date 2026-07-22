@@ -7,6 +7,8 @@
  local useButton = require 'helium.shell.button' --button shell
  local lume = require 'lib.lume'
 
+ local assetManager = require 'core.assetmanager'
+
  local UIManager = {}
 
  scene = helium.scene.new(true)
@@ -36,21 +38,39 @@
      end
  end)
 
-endTurn = helium(
-    function(player,view)
-        input('clicked', 
-        function()
-            local ID = player.ID
-            local cardsPlayed = player.cardQueue
-            local turnManager = player.turnManager
-            turnManager:submitTurn(ID,cardsPlayed)
-        end)    
+endTurn = helium(function(player, view)
+    input('clicked', function()
+        player:submitTurn()
+    end)
 
     return function()
         love.graphics.setColor(8/255,0.4,0.6)
         love.graphics.rectangle('fill',0,0,view.w,view.h)
         love.graphics.setColor(1,1,1)
         love.graphics.print("End Turn!")
+    end
+end)
+
+cycleRight = helium(
+function(player)
+    input('clicked',function()
+        player:rightRotate()
+    end)
+
+    return function()
+        love.graphics.draw(assetManager.buttons["RightArrow"],0,0)
+    end
+end)
+
+cycleLeft = helium(
+function(player)
+    input('clicked',function()
+        player:leftRotate()
+    end)
+
+    return function()
+        --love.graphics.rotate(math.rad(180)) If you can make the rotate work be my guest
+        love.graphics.draw(assetManager.buttons["LeftArrow"],0,0)
     end
 end)
 

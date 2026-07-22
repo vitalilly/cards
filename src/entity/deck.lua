@@ -9,6 +9,7 @@ function deck:init(o) --Intitialise an instance of the card class
     self.trueCards = o.trueCards or {} --Stores what the players deck looks like regardless of the current game state
     self.cards = o.cards or {}
     self.discardPile = o.discardPile or {}
+    self:shuffle()
 end
 
 function deck:addCard(card)
