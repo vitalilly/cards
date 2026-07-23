@@ -4,7 +4,6 @@ local Entity = require 'core.entity'
 local Background = Entity:extend()  
 --
 
-local active = false
 function Background:init(t)
     Entity.init(self,t)
     t = t or {}
@@ -15,15 +14,12 @@ end
 
 function Background:choose(scene)
         image = assetmanager.backgrounds[scene]
-        active = true
 end
 
 function Background:draw() 
     love.graphics.push()
     love.graphics.translate(0,0)
-    if active then 
-        love.graphics.draw(image,0,0)
-    end
+    love.graphics.draw(image,0,0)
     love.graphics.pop()
 end
 
