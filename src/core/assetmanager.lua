@@ -4,6 +4,10 @@ buttons = {},
 cardArt = {},
 players = {}}
 
+assetManager.backgrounds = {
+    menu = love.graphics.newImage("assets/img/menu.png")
+}
+
 assetManager.sprites = {
     units = {
         knight = love.graphics.newImage("assets/knight/atlas.png")
