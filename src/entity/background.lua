@@ -3,9 +3,8 @@ local Entity = require 'core.entity'
 
 local Background = Entity:extend()  
 --
-local active = false
-local image
 
+local active = false
 function Background:init(t)
     Entity.init(self,t)
     t = t or {}
@@ -15,10 +14,8 @@ function Background:init(t)
 end
 
 function Background:choose(scene)
-    if scene == 'menu' then 
-        image = assetmanager.backgrounds.menu
+        image = assetmanager.backgrounds[scene]
         active = true
-    end
 end
 
 function Background:draw() 
