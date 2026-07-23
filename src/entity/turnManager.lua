@@ -19,7 +19,7 @@ end
 function turnManager:makePlayers()
     local output = {}
     for i= 1,self.numPlayers do
-        local player = cardPlayer:new({ID = i, turnManager = self,sprite = assetManager["Player" .. i]})
+        local player = cardPlayer:new({ID = i, turnManager = self,sprite = assetManager.players["Player" .. i]})
         table.insert(output,player)
     end
     output = self:populateOpponents(output)

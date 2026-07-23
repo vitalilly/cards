@@ -100,7 +100,7 @@ function cardPlayer:rightRotate() -- Called by the right arrow button
     if self.selectedOpponent > #self.opponents then
         self.selectedOpponent = 1
     end
-    print(self.selectedOpponent)
+    print(self:getCurrentOpponent().ID)
 end
 
 function cardPlayer:leftRotate() -- Called by the left arrow button
@@ -108,7 +108,7 @@ function cardPlayer:leftRotate() -- Called by the left arrow button
     if self.selectedOpponent <= 0 then
         self.selectedOpponent = #self.opponents
     end
-    print(self.selectedOpponent)
+    print(self:getCurrentOpponent().ID)
 end
 
 function cardPlayer:testHand(num) --Test function to see if the hand is working
