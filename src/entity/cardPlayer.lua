@@ -5,6 +5,7 @@ local slash = require 'entity.Cards.attacks.Slash'
 local globals = require 'globals'
 local assetManager = require 'core.assetmanager'
 local conf = require 'conf'
+local label = require 'entity.label'
 
 local cardPlayer = Entity:extend() --Player object that has this weird name because a player.lua already exists
 
@@ -18,7 +19,9 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.turnManager = o.turnManager or {}
     self.playOver = o.playOver or false
 
-    self.health = o.health or 10
+    self.maxHealth = o.maxHealth or 10
+    self.health = self.maxHealth
+    
     self.deck = o.deck or deck:new()
     self.deck = self:testHand(20) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
@@ -37,10 +40,17 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
     self.maxCardsPlayed = o.maxCardsPlayed or 10 --max num allowed. Set to 10 for testing
-    
+   
     self.sprite = o.sprite or assetManager.players["Player1"]
 
+    self.healthLabel = label:new({text = "H " .. self.health .. "/" .. self.maxHealth, x = 0, y = conf.windowh-30})
+    self.defenseLabel = label:new({text = "D " .. self.currentBlock, x = conf.windoww/2 - 50, y = 30})
+    self.pendingLabel = label:new({text = "P ".. self.pendingDamage,x = conf.windoww/2 + 50, y = 30})
+
     if self.ID ~= globals.ID then --All beyond here go no further unless you are the truest of players
+        self.healthLabel:setXY(conf.windoww/2 - 50,conf.windowh/2 - 140)
+        self.defenseLabel:setXY(conf.windoww/2-70,conf.windowh/2 + 110)
+        self.pendingLabel:setXY(conf.windoww/2+30,conf.windowh/2 + 110)
         return
     end
 
@@ -232,15 +242,31 @@ end
 
 function cardPlayer:draw()
     self.hand:draw()
+    self:drawOwnLabels()
     local opponent = self:getCurrentOpponent()
     if opponent ~= nil then
         opponent:drawSelf()
     end
+
+end
+
+function cardPlayer:drawOwnLabels()
+    self.healthLabel.text = "H " .. self.health .. "/" .. self.maxHealth
+    self.healthLabel:draw()
+
+    self.defenseLabel.text = "D " .. self.currentBlock
+    self.defenseLabel:draw()
+    
+    self.pendingLabel.text = "P ".. self.pendingDamage
+    self.pendingLabel:draw()
+
 end
 
 function cardPlayer:drawSelf()
     local localX,localY = push:toGame(conf.windoww/2 - 45,conf.windowh/2 - 100)
     love.graphics.draw(self.sprite,localX,localY)
+
+    self:drawOwnLabels()
 end
 
 function cardPlayer:update(dt)

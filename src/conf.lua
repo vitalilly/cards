@@ -12,8 +12,8 @@ config.globalPalette = 3 -- [1-4]
 
 function love.conf(t)
     t.window.title = "Untitled Card Game"
-    t.window.width = 1280
-    t.window.height = 720
+    t.window.width = config.windoww
+    t.window.height = config.windowh
     io.stdout:setvbuf("no")
 end
 
