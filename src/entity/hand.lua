@@ -77,7 +77,7 @@ function hand:drawCards(x) --Draw x cards from the deck
 end
 
 function hand:discardHand() --Put the entire hand into the discard pile
-    for i, v in ipairs(self.cards) do
+    for _, v in ipairs(self.cards) do
         self.deck:discard(v)
     end
     self.cards = {}

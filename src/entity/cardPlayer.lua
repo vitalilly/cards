@@ -57,6 +57,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.endTurnButton = self:makeEndTurn()
     self.rightRotateButton = self:makeRightRotate()
     self.leftRotateButton = self:makeLeftRotate()
+    print("This is printing")
 end
 
 function cardPlayer:submitTurn() --Called by the End Turn Button
@@ -147,7 +148,7 @@ function cardPlayer:endTurn()
     self:ResolveDamage()--First now any pending damage will be taken
     self:DeterminePendingDamage()--Determine what the new Pending Damage instance
     self:resetSourcesOfDamage()--Reset sources of damage
-
+    self.cardsPlayed = 0
 end
 
 function cardPlayer:playCard(card) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply. Returns if the card was played or not
@@ -193,10 +194,11 @@ end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
     local max = 0
-    for i, v in ipairs(self.allSourcesOfDamage) do
+    for _, v in ipairs(self.allSourcesOfDamage) do
+        print(v)
         if v > max then
             max = v
-        end    
+        end
     end
     self.pendingDamage = max
 
@@ -214,7 +216,7 @@ function cardPlayer:ResolveDamage() --Determine if the player blocked or not
     self.pendingDamage = 0
 
     if unblockedDamage > 0 then --Prevents the player from gaining health from blocking
-        unblockedDamage = self.MinionsTakeTheHit(unblockedDamage) --Minions take damage first. Update unlbocked damage after minions fall in the line of duty
+        unblockedDamage = self:MinionsTakeTheHit(unblockedDamage) --Minions take damage first. Update unlbocked damage after minions fall in the line of duty
         self.health = self.health - unblockedDamage
         --TODO add a check for a lose state.
     end
@@ -223,8 +225,8 @@ function cardPlayer:ResolveDamage() --Determine if the player blocked or not
 end
 
 function cardPlayer:MinionsTakeTheHit(damage)
-    for i, minion in ipairs(self.minions) do
-        damage = minion.TakeTheHit(damage)
+    for _, minion in ipairs(self.minions) do
+        damage = minion:TakeTheHit(damage)
         if damage == 0 then --We know that all the damage has been dealt out
             break
         end
