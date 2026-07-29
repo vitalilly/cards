@@ -28,7 +28,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
 
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
     self.allSourcesOfDamage = o.allSourcesOfDamage or {} --Table that will store all opponents damage against this player. We will then take the largest value in this table as the pending damage
-    self.currentBlock = o.currentBlock or 0 --Damage that will be prevented 
+    self.currentBlock = 0 --Damage that will be prevented 
     self.effectsSOT = o.effectsSOT or {} --All start of turn effects stored as a table
     self.effectsEOT = o.effectsEOT or {} --All end of turn effects stored as a table
     self.minions = o.minions or {} --List of all minions the player has
@@ -144,11 +144,11 @@ function cardPlayer:endTurn()
     self.hand:discardHand()
     self.turnOver = false
     self.cardQueue = {} --Reset the queue
+    self.cardsPlayed = 0
     --DAMAGE STEP
     self:ResolveDamage()--First now any pending damage will be taken
     self:DeterminePendingDamage()--Determine what the new Pending Damage instance
     self:resetSourcesOfDamage()--Reset sources of damage
-    self.cardsPlayed = 0
 end
 
 function cardPlayer:playCard(card) --Adds a tuple containing the card played and its target to the cardQueue. nil values for target are handled when target doesnt apply. Returns if the card was played or not
@@ -193,25 +193,28 @@ function cardPlayer:checkForEOT()
 end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
+    print("determine pending damage")
     local max = 0
-    for _, v in ipairs(self.allSourcesOfDamage) do
+    for _, v in pairs(self.allSourcesOfDamage) do
         print(v)
         if v > max then
             max = v
         end
     end
     self.pendingDamage = max
+   --print(max)
 
 end
 
 function cardPlayer:resetSourcesOfDamage()
-    for i, v in ipairs(self.opponents) do --For every opponent we are going to set their associated key value pair to 0
+    for _, v in pairs(self.opponents) do --For every opponent we are going to set their associated key value pair to 0
         self.allSourcesOfDamage[v] = 0
     end
 end
 
 function cardPlayer:ResolveDamage() --Determine if the player blocked or not
     local unblockedDamage = self.pendingDamage - self.currentBlock
+    --print(unblockedDamage)
     self.currentBlock = 0 --Reset these values
     self.pendingDamage = 0
 
