@@ -1,7 +1,7 @@
 local Entity = require 'core.entity'
 local hand = require 'entity.hand'
 local deck = require 'entity.deck'
-local slash = require 'entity.Cards.attacks.Slash'
+local cardbinder = require 'core.cardbinder'
 local globals = require 'globals'
 local assetManager = require 'core.assetmanager'
 local conf = require 'conf'
@@ -23,7 +23,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.health = self.maxHealth
     
     self.deck = o.deck or deck:new()
-    self.deck = self:testHand(20) --For testing
+    self.deck = self:testDeck(20) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
 
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -121,11 +121,15 @@ function cardPlayer:leftRotate() -- Called by the left arrow button
     print(self:getCurrentOpponent().ID)
 end
 
-function cardPlayer:testHand(num) --Test function to see if the hand is working
+function cardPlayer:testDeck(num) --Test function to see if the hand is working
     local result = deck:new()
-    for i = 1,num,1 do
-        result:addCard(slash:new({player = self}))
+    for i = 1,num/2,1 do
+        result:addCard(cardbinder:getCard("Slash", self))
     end
+    for i = 1,num/2,1 do
+        result:addCard(cardbinder:getCard("Fortify", self))
+    end
+    result:shuffle()
     return result
 end
 

@@ -39,6 +39,7 @@ assetManager.buttons = {
 
 assetManager.cardArt = {
     ["Placeholder"] = love.graphics.newImage('assets/cardArt/Placeholder.png'),
+    ["Fortify"] = love.graphics.newImage('assets/cardArt/Fortify.png'),
 }
 
 assetManager.players = {

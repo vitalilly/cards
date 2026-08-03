@@ -1,6 +1,7 @@
 local card = require 'entity.card'
 
 local fortify = card:extend()
+local assetmanager = require 'core.assetmanager'
 
 function fortify:init(o)
     card.init(self,o)
@@ -9,6 +10,7 @@ function fortify:init(o)
     self.title = "Fortify"
     self.targets = true
     self.tag = self.tagList.Defend
+    self.image = assetmanager:getCardArt("Fortify")
 end
 
 function fortify:playTarget(target) --Block for 3
