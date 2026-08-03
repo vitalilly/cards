@@ -23,9 +23,10 @@ end
 
 function deck:drawACard() --return the card at the end of the cards array and remove it
     if #self.cards == 0 then --Check to see if the deck is empty or not.
-        self:shuffleInDiscard() --Is this correct?!
+        self:shuffleInDiscard()
     end
     local card = self.cards[#self.cards] --Access the index equal to the number of elements in the array. Lua starts at index 1 lmao
+    card:resetPosition()
     table.remove(self.cards, #self.cards)
     return card
 end
@@ -42,7 +43,7 @@ function deck:shuffle()
     local shuffledCards = {}
     local size = #self.cards
     for i = 1,size,1 do --For every card in the deck
-        local randomValue = math.random(1,#self.cards) --Get a random value in the array
+        local randomValue = math.random(#self.cards) --Get a random value in the array
         local card = table.remove(self.cards,randomValue) --remove it from the array so we dont encounter it again and get the removed entry
         table.insert(shuffledCards,card) --add it to the new array
     end

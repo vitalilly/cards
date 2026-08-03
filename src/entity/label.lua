@@ -20,7 +20,7 @@ end
 function label:draw()
     love.graphics.push()
     love.graphics.translate(self.x,self.y)
-    love.graphics.print(self.text)
+    love.graphics.print(self.text,0,0)
     love.graphics.pop()
 end
 
