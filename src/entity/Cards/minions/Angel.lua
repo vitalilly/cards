@@ -21,7 +21,7 @@ end
 function angel:effect(tuple) --Additional block from block cards
     local card = tuple.Card
     if card.tag == self.tagList.Defend then
-        self.player.currentBlock = self.player.currentBlock + 1    
+        self.player.currentBlock = self.player.currentBlock + 1 
     end
 end
 

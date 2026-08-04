@@ -18,7 +18,7 @@ function crusader:play()
     table.insert(self.player.effects,self)
 end
 
-function crusader:effect(tuple) --Additional block from block cards
+function crusader:effect(tuple) --Additional attack
     local card = tuple.Card
     local target = tuple.Target
     if card.tag == self.tagList.Attack then

@@ -197,7 +197,6 @@ function cardPlayer:checkForEOT()
 end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
-    print("determine pending damage")
     local max = 0
     for _, v in pairs(self.allSourcesOfDamage) do
         print(v)
@@ -206,8 +205,6 @@ function cardPlayer:DeterminePendingDamage() --Determine the largest source of d
         end
     end
     self.pendingDamage = max
-   --print(max)
-
 end
 
 function cardPlayer:resetSourcesOfDamage()
@@ -218,7 +215,7 @@ end
 
 function cardPlayer:ResolveDamage() --Determine if the player blocked or not
     local unblockedDamage = self.pendingDamage - self.currentBlock
-    --print(unblockedDamage)
+
     self.currentBlock = 0 --Reset these values
     self.pendingDamage = 0
 

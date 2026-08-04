@@ -2,3 +2,5 @@
 mymakelove
 .vscode
 output.txt
+Makefile
+.DS_Store
