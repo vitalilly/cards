@@ -4,8 +4,8 @@ local slash = card:extend()
 local assetManager = require 'core.assetmanager'
 
 function slash:init(o)
-    card.init(self,o)
     o = o or {}
+    card.init(self,o)
 
     self.title = "Slash"
     self.targets = true
