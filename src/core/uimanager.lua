@@ -6,6 +6,7 @@
  local input = require 'helium.core.input'
  local useButton = require 'helium.shell.button' --button shell
  local lume = require 'lib.lume'
+ local Signal = require 'lib.signal'
 
  local assetManager = require 'core.assetmanager'
 
@@ -54,7 +55,7 @@ end)
 cycleRight = helium(
 function(player)
     input('clicked',function()
-        player:rightRotate()
+        player:RotateTarget(false) -- left = false
     end)
 
     return function()
@@ -65,12 +66,64 @@ end)
 cycleLeft = helium(
 function(player)
     input('clicked',function()
-        player:leftRotate()
+        player:RotateTarget(true) --Left = true
     end)
 
     return function()
         --love.graphics.rotate(math.rad(180)) If you can make the rotate work be my guest
         love.graphics.draw(assetManager.buttons["LeftArrow"],0,0)
+    end
+end)
+
+pageLeft = helium(
+function(gallery)
+    input('clicked',function()
+        gallery:turnPage(true) -- left = true
+    end)
+
+    return function()
+        love.graphics.draw(assetManager.buttons["LeftArrow"],0,0)
+    end
+end)
+
+pageRight = helium(
+function(gallery)
+    input('clicked',function()
+        gallery:turnPage(false) -- left = false
+    end)
+
+    return function()
+        love.graphics.draw(assetManager.buttons["RightArrow"],0,0)
+    end
+end)
+
+showDeck = helium(
+function(player,view)
+    input('clicked',function()
+        local cards = player.deck.cards
+        Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+    end)
+
+    return function()
+        love.graphics.setColor(8/255,0.4,0.6)
+        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.setColor(1,1,1)
+        love.graphics.print("Show Deck!!")
+    end
+end)
+
+showDiscard = helium(
+function(player,view)
+    input('clicked',function()
+        local cards = player.deck.discardPile
+        Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+    end)
+
+    return function()
+        love.graphics.setColor(8/255,0.4,0.6)
+        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.setColor(1,1,1)
+        love.graphics.print("Show Discard!!")
     end
 end)
 

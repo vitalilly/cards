@@ -57,6 +57,8 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.endTurnButton = self:makeEndTurn()
     self.rightRotateButton = self:makeRightRotate()
     self.leftRotateButton = self:makeLeftRotate()
+    self.showDiscardButton = self:makeShowDiscard()
+    self.showDeckButton = self:makeShowDeck()
     print("This is printing")
 end
 
@@ -95,7 +97,7 @@ end
 function cardPlayer:makeLeftRotate()
     local localW,localH = 16,30
     local localX,localY = localW*2,conf.windowh/2 - localH
-   
+
     --localW,localH = push:toGame(localW,localH)
     --localX,localY = push:toGame(localX,localY)
     local view = {h = localH, w = localW,x = localX, y = localY}
@@ -106,20 +108,46 @@ function cardPlayer:makeLeftRotate()
     return leftRotateButton
 end
 
-function cardPlayer:rightRotate() -- Called by the right arrow button
-    self.selectedOpponent = self.selectedOpponent + 1
-    if self.selectedOpponent > #self.opponents then
-        self.selectedOpponent = 1
-    end
-    print(self:getCurrentOpponent().ID)
+function cardPlayer:makeShowDiscard()
+    local localX,localY = conf.gamew - 40,conf.gameh-50
+    local localW,localH = 200,30
+
+    localX,localY = push:toGame(localX,localY)
+    localW,localH = push:toGame(localW,localH)
+    local view = {h = localH, w = localW,x = localX, y = localY}
+
+    local showDiscardButton = showDiscard(self,view.w,view.h)
+    showDiscardButton:draw(view.x,view.y)
+    showDiscardButton.view = view
+    return showDiscardButton
 end
 
-function cardPlayer:leftRotate() -- Called by the left arrow button
-    self.selectedOpponent = self.selectedOpponent - 1
-    if self.selectedOpponent <= 0 then
-        self.selectedOpponent = #self.opponents
+function cardPlayer:makeShowDeck()
+    local localX,localY = 40,conf.gameh-50
+    local localW,localH = 200,30
+
+    localX,localY = push:toGame(localX,localY)
+    localW,localH = push:toGame(localW,localH)
+    local view = {h = localH, w = localW,x = localX, y = localY}
+
+    local showDeckButton = showDeck(self,view.w,view.h)
+    showDeckButton:draw(view.x,view.y)
+    showDeckButton.view = view
+    return showDeckButton
+end
+
+function cardPlayer:RotateTarget(left) -- Called by the right arrow button
+    if left then
+        self.selectedOpponent = self.selectedOpponent - 1
+        if self.selectedOpponent <= 0 then
+            self.selectedOpponent = #self.opponents
+        end
+    else
+        self.selectedOpponent = self.selectedOpponent + 1
+        if self.selectedOpponent > #self.opponents then
+            self.selectedOpponent = 1
+        end
     end
-    print(self:getCurrentOpponent().ID)
 end
 
 function cardPlayer:testDeck(num) --Test function to see if the hand is working

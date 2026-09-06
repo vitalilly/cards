@@ -14,15 +14,12 @@ math.randomseed(os.time())
 local cardGame = require('scenes/menu')
 local cardGameScene = cardGame:buildCardGame(4)
 
+local galleryScene = require('scenes/galleryScene')
+
 function love.load()
 --    uimanager.loadScene('menu') --test: load "menu" scene (small rectangle)
     gamestate.registerEvents()
-    Signal.register('SwitchToGame', function()
-        gamestate.switch(cardGameScene)
-    end)
-    Signal.register('SwitchToGallery', function(cards)
-        --gamestate.switch() TODO     
-    end)
+    RegisterSignals()
 
     Signal.emit('SwitchToGame')
 end
@@ -33,7 +30,8 @@ function RegisterSignals()
         gamestate.switch(cardGameScene)
     end)
     Signal.register('SwitchToGallery', function(cards)
-        --gamestate.switch() TODO     
+        local gallerySceneInstance = galleryScene:buildGallery(cards)
+        gamestate.switch(gallerySceneInstance)
     end)
 
 end

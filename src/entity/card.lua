@@ -77,6 +77,10 @@ function card:draw()
     love.graphics.draw(self.image,self.x,self.y)
 end
 
+function card:drawAt(x,y)
+    love.graphics.draw(self.image,x,y)
+end
+
 return card
 
 

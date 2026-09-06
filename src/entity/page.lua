@@ -1,18 +1,51 @@
+local config = require 'conf'
 local Entity = require 'core.entity'
 
 local page = Entity:extend()
+
+local rows = 3
+local collumns = 5
+
+local border = 20
+local wideBorder = 40 --Wider border at the bottom to make room for text description of cards when hovered over
+
+local function getGrid() --Run this function and store the result statically to reduce computationism
+    local grid = {}
+    local workableX = config.gamew - (border*2) --Get the space the cards may be in horiztonally as an int
+    local workableY = config.gameh - border - wideBorder --Get the space the cards may be in vertically as an int
+    for i = 1, rows, 1 do
+        for j = 1, collumns, 1 do
+            local x = (j-1)*math.floor(workableX/collumns) + border
+            local y = (i-1)*math.floor(workableY/rows) + border
+            local coords = {x = x, y = y}
+            table.insert(grid,coords) --Building the array as a straight line to make card placement easier as we will just place cards in the order of the array.
+        end
+    end
+    return grid
+end
+
+local grid = getGrid()
 
 function page:init(o)
     o = o or {}
     Entity.init(self,o)
 
-    self.rows = o.rows or 10
-    self.collumns = o.collumns
-
-    self.cards = {}
+    self.cards = o.cards or {}
 end
 
-function page:addCard(card)
-    table.insert(self.cards,card)
+function page.getDimensions()
+    return rows,collumns
 end
+
+function page:draw()
+    for i = 1, #self.cards, 1 do
+        local card = self.cards[i]
+        local coords = grid[i]
+        card:drawAt(coords.x,coords.y)
+    end
+end
+
+return page
+
+
 
