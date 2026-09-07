@@ -6,6 +6,7 @@ local globals = require 'globals'
 local assetManager = require 'core.assetmanager'
 local conf = require 'conf'
 local label = require 'entity.label'
+local Signal = require 'lib.signal'
 
 local cardPlayer = Entity:extend() --Player object that has this weird name because a player.lua already exists
 
@@ -23,7 +24,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.health = self.maxHealth
     
     self.deck = o.deck or deck:new()
-    self.deck = self:testDeck(20) --For testing
+    self.deck = self:testDeck(50) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
 
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -54,12 +55,14 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
         return
     end
 
-    self.endTurnButton = self:makeEndTurn()
-    self.rightRotateButton = self:makeRightRotate()
-    self.leftRotateButton = self:makeLeftRotate()
-    self.showDiscardButton = self:makeShowDiscard()
-    self.showDeckButton = self:makeShowDeck()
-    print("This is printing")
+    self.buttons = {["endTurnButton"] = self:makeEndTurn(),
+    ["rightRotateButton"] = self:makeRightRotate(),
+    ["leftRotateButton"] = self:makeLeftRotate(),
+    ["showDiscardButton"] = self:makeShowDiscard(),
+    ["showDeckButton"] = self:makeShowDeck()}
+
+    self:drawButtons()
+    Signal.register("drawPlayerButtons", function() self:drawButtons() end)
 end
 
 function cardPlayer:submitTurn() --Called by the End Turn Button
@@ -305,6 +308,18 @@ end
 
 function cardPlayer:update(dt)
     self.hand:update(dt)
+end
+
+function cardPlayer:undrawButtons()
+    for _,v in pairs(self.buttons) do
+        v:undraw()
+    end
+end
+
+function cardPlayer:drawButtons()
+    for _,v in pairs(self.buttons) do
+        v:draw(v.view.x,v.view.y)
+    end
 end
 
 return cardPlayer

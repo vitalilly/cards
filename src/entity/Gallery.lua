@@ -1,6 +1,7 @@
 local Entity = require 'core.entity'
 local page = require 'entity.page'
 local conf = require 'conf'
+local Signal = require 'lib.signal'
 
 local gallery = Entity:extend()
 
@@ -13,16 +14,24 @@ function gallery:init(o)
     Entity.init(self,o)
 
     self.cards = o.cards or {}
+    print(self.cards)
 
-    table.sort(self.cards,function(a,b) --sort the cards so the order is lost and so that the number of copies is obvious.
-        return a.title < b.title
-    end)
+    if next(self.cards) ~= nil then --Incase its empty
+        table.sort(self.cards,function(a,b) --sort the cards so the order is lost and so that the number of copies is obvious.
+            return a.title < b.title
+        end)
+        self.book = self:createBook() --Books are made up of pages
+    else
+        self.book = {[1] = page:new()}
+    end
 
     self.selectedPage = 1
-    self.book = self:createBook() --Books are made up of pages
 
-    self.leftTurnButton = self:makeLeftRotate()
-    self.rightTurnButton = self:makeRightRotate()
+    self.buttons = {["leftTurnButton"] = self:makeLeftRotate(),
+    ["rightTurnButton"] = self:makeRightRotate(),
+    ["exitButton"] = self:makeExitButton()}
+
+    Signal.register("drawGalleryButtons", function() self:drawButtons() end)
 end
 
 function gallery:createBook()
@@ -75,7 +84,7 @@ function gallery:makeRightRotate()
 
     local view = {h = localH, w = localW,x = localX, y = localY}
 
-    local rightRotateButton = pageLeft(self)
+    local rightRotateButton = pageRight(self)
     rightRotateButton:draw(view.x,view.y)
     rightRotateButton.view = view
     return rightRotateButton
@@ -87,10 +96,37 @@ function gallery:makeLeftRotate()
    
     local view = {h = localH, w = localW,x = localX, y = localY}
 
-    local leftRotateButton = pageRight(self)
+    local leftRotateButton = pageLeft(self)
     leftRotateButton:draw(view.x,view.y)
     leftRotateButton.view = view
     return leftRotateButton
+end
+
+function gallery:makeExitButton()
+    local localX,localY = 0,0
+    local localW,localH = 200,30
+
+    localX,localY = push:toGame(localX,localY)
+    localW,localH = push:toGame(localW,localH)
+    local view = {h = localH, w = localW,x = localX, y = localY}
+
+    local exitButton = exitGallery(self,view.w,view.h)
+    exitButton:draw(view.x,view.y)
+    exitButton.view = view
+    return exitButton
+
+end
+
+function gallery:drawButtons()
+    for _,v in pairs(self.buttons) do
+        v:draw(v.view.x,v.view.y)
+    end
+end
+
+function gallery:undrawButtons()
+    for _,v in pairs(self.buttons) do
+        v:undraw()
+    end
 end
 
 return gallery

@@ -100,8 +100,10 @@ end)
 showDeck = helium(
 function(player,view)
     input('clicked',function()
+        player:undrawButtons()
         local cards = player.deck.cards
         Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+        Signal.emit('drawGalleryButtons')
     end)
 
     return function()
@@ -115,8 +117,11 @@ end)
 showDiscard = helium(
 function(player,view)
     input('clicked',function()
+        player:undrawButtons()
         local cards = player.deck.discardPile
+        print(#cards)
         Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+        Signal.emit('drawGalleryButtons')
     end)
 
     return function()
@@ -141,6 +146,23 @@ function UIManager.add(o)
     end
     return o --this is in pool? probably for debugging purposes 
 end
+
+exitGallery = helium(
+    function(gallery,view)
+        input('clicked',function()
+            gallery:undrawButtons()
+            Signal.emit('SwitchToGame')
+            Signal.emit('drawPlayerButtons')
+        end)
+
+        return function()
+            love.graphics.setColor(8/255,0.4,0.6)
+            love.graphics.rectangle('fill',0,0,view.w,view.h)
+            love.graphics.setColor(1,1,1)
+            love.graphics.print("Exit Gallery!!")
+        end
+    end
+)
 
 --Ensure a scene exists, then change the active scene accordingly
 function UIManager.loadScene(o)
