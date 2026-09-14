@@ -18,7 +18,7 @@ function card:init(o) --Intitialise an instance of the card class
     self.player = o.player or {} --Descirbes the player to whom this card belongs to.
     self.targets = o.targets or false --Describes whether or not this card needs a target to work
     self.tag = o.tag or 0 --Describes what category this card falls into
-    self.tagList = enum()
+    self.tagList = self.tagEnum()
     self.x = defaultX
     self.y = defaultY
     self.selected = o.selected or false --The card is being hovered over
@@ -26,7 +26,7 @@ function card:init(o) --Intitialise an instance of the card class
     self.entered = o.entered or false --The card has been placed in the hand correctly
 end
 
-function enum()
+function card.tagEnum()
     return {None = 0, Attack = 1, Defend = 2, Minion = 3,Modifier = 4}
 end
 

@@ -31,6 +31,7 @@ function page:init(o)
     Entity.init(self,o)
 
     self.cards = o.cards or {}
+    self.minions = o.minions or false
 end
 
 function page.getDimensions()
@@ -38,10 +39,21 @@ function page.getDimensions()
 end
 
 function page:draw()
-    for i = 1, #self.cards, 1 do
+    local startPoint
+    if not self.minions then
+        startPoint = 1 + collumns
+    else
+        startPoint = 1
+    end
+
+    for i = startPoint, #self.cards, 1 do
         local card = self.cards[i]
         local coords = grid[i]
-        card:drawAt(coords.x,coords.y)
+        if not self.minions then
+            card:drawAt(coords.x,coords.y)
+        else
+            card:drawMinion(coords.x,coords.y)
+        end
     end
 end
 

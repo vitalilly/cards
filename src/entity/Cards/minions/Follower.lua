@@ -11,11 +11,13 @@ function follower:init(o)
     self.targets = false
     self.tag = self.tagList.Minion
     self.health = 1
+
+    self.effectTags = {}
+    table.insert(self.effectTags,self.effectTagList.SOT)
 end
 
 function follower:play()
-    table.insert(self.player.minions,self)
-    table.insert(self.player.effectsSOT,self)
+    self:minionPlay()
 end
 
 function follower:SOT()
@@ -23,8 +25,7 @@ function follower:SOT()
 end
 
 function follower:death()
-    self:removeFrom(self.player.minions)
-    self:removeFrom(self.player.effectsSOT)
+    self:minionDeath()
 end
 
 return follower

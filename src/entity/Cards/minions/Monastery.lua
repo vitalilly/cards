@@ -9,11 +9,13 @@ function monastery:init(o)
     self.targets = false
     self.tag = self.tagList.Minion
     self.health = 2
+
+    self.effectTags = {}
+    table.insert(self.effectTags,self.effectTagList.SOT)
 end
 
 function monastery:play()
-    table.insert(self.player.minions,self)
-    table.insert(self.player.effectsSOT,self)
+    self:minionPlay()
 end
 
 function monastery:SOT()
@@ -21,8 +23,7 @@ function monastery:SOT()
 end
 
 function monastery:death()
-    self:removeFrom(self.player.minions)
-    self:removeFrom(self.player.effectsSOT)
+    self:minionDeath()
 end
 
 return monastery

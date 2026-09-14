@@ -12,16 +12,17 @@ local layers = {
 
 local S = SceneBuilder()
 
-function S:addGallery(cards)
+function S:addGallery(cards,YesMinions)
     self:addObjectAs('gallery',{script = 'entity.Gallery', arguments = {
         scene = S.scene,
         z = layers.card,
         cards = cards,
+        minions = YesMinions
     }})
 end
 
-function S:buildGallery(cards) --Number of players to create
-    self:addGallery(cards)
+function S:buildGallery(cards,YesMinions) --Number of players to create
+    self:addGallery(cards,YesMinions)
     return self:build()
 end
 

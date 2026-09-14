@@ -22,14 +22,17 @@ function gallery:init(o)
         end)
         self.book = self:createBook() --Books are made up of pages
     else
-        self.book = {[1] = page:new()}
+        self.book = {[1] = page:new(o.minions)}
     end
 
     self.selectedPage = 1
 
-    self.buttons = {["leftTurnButton"] = self:makeLeftRotate(),
-    ["rightTurnButton"] = self:makeRightRotate(),
-    ["exitButton"] = self:makeExitButton()}
+    if not o.minions then
+         self.buttons = {["leftTurnButton"] = self:makeLeftRotate(),
+    ["rightTurnButton"] = self:makeRightRotate()}
+    end
+
+    self.buttons["exitButton"] = self:makeExitButton()
 
     Signal.register("drawGalleryButtons", function() self:drawButtons() end)
 end
@@ -53,7 +56,7 @@ function gallery:createBook()
             table.insert(cards,self.cards[counter])
             counter = counter + 1
         end
-        local currentPage = page:new({cards = cards})
+        local currentPage = page:new({cards = cards, minions = self.minions})
         table.insert(book,currentPage) --Save it to our book
     end
     return book

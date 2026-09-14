@@ -22,7 +22,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
 
     self.maxHealth = o.maxHealth or 10
     self.health = self.maxHealth
-    
+
     self.deck = o.deck or deck:new()
     self.deck = self:testDeck(50) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
@@ -41,7 +41,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.effects = o.effects or {} --Table listing all effects. Effects will respond to specific tags from other cards
     self.cardsPlayed = o.cardsPlayed or 0 --count how many cards played on a given turn
     self.maxCardsPlayed = o.maxCardsPlayed or 10 --max num allowed. Set to 10 for testing
-   
+
     self.sprite = o.sprite or assetManager.players["Player1"]
 
     self.healthLabel = label:new({text = "H " .. self.health .. "/" .. self.maxHealth, x = 0, y = conf.windowh-30})
@@ -208,7 +208,6 @@ function cardPlayer:playCard(card) --Adds a tuple containing the card played and
 end
 
 --TODO Add arrows to the screen that allow the player to cycle through opponents for the purpose of understanding the field and targeting.
-
 function cardPlayer:checkForEffects(tuple)
     for _,v in ipairs(self.effects) do
         v.effect(tuple)

@@ -9,13 +9,15 @@ function crusader:init(o)
 
     self.title = "Summon Crusader"
     self.targets = false
-    self.tag = self.tagList.Defend
+    self.tag = self.tagList.Minion
     self.health = 2
+    
+    self.effectTags = {}
+    table.insert(self.effectTags,self.effectTagList.effect)
 end
 
 function crusader:play()
-    table.insert(self.player.minions,self)
-    table.insert(self.player.effects,self)
+    self:minionPlay()
 end
 
 function crusader:effect(tuple) --Additional attack
@@ -27,8 +29,7 @@ function crusader:effect(tuple) --Additional attack
 end
 
 function crusader:death()
-    self:removeFrom(self.player.minions)
-    self:removeFrom(self.player.effects)
+    self:minionDeath()
 end
 
 return crusader

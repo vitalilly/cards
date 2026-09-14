@@ -11,11 +11,13 @@ function angel:init(o)
     self.targets = false
     self.tag = self.tagList.Minion
     self.health = 2
+
+    self.effectTags = {}
+    table.insert(self.effectTags,self.effectTagList.effect)
 end
 
 function angel:play()
-    table.insert(self.player.minions,self)
-    table.insert(self.player.effects,self)
+    self:minionPlay()
 end
 
 function angel:effect(tuple) --Additional block from block cards
@@ -26,8 +28,7 @@ function angel:effect(tuple) --Additional block from block cards
 end
 
 function angel:death()
-    self:removeFrom(self.player.minions)
-    self:removeFrom(self.player.effects)
+    self:minionDeath()
 end
 
 return angel

@@ -42,6 +42,10 @@ assetManager.cardArt = {
     ["Fortify"] = love.graphics.newImage('assets/cardArt/Fortify.png'),
 }
 
+assetManager.minionArt = {
+    ["Placeholder"] = love.graphics.newImage('assets/minionArt/Placeholder.png')
+}
+
 assetManager.players = {
     ["Player1"] = love.graphics.newImage('assets/player/player1.png'),
     ["Player2"] = love.graphics.newImage('assets/player/player2.png'),

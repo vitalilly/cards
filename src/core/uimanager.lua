@@ -102,7 +102,7 @@ function(player,view)
     input('clicked',function()
         player:undrawButtons()
         local cards = player.deck.cards
-        Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+        Signal.emit('SwitchToGallery',cards,false) --Switch to the gallery scene and pass the cards to it
         Signal.emit('drawGalleryButtons')
     end)
 
@@ -120,7 +120,7 @@ function(player,view)
         player:undrawButtons()
         local cards = player.deck.discardPile
         print(#cards)
-        Signal.emit('SwitchToGallery',cards) --Switch to the gallery scene and pass the cards to it
+        Signal.emit('SwitchToGallery',cards,false) --Switch to the gallery scene and pass the cards to it
         Signal.emit('drawGalleryButtons')
     end)
 
