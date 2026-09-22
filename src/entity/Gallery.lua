@@ -14,7 +14,7 @@ function gallery:init(o)
     Entity.init(self,o)
 
     self.cards = o.cards or {}
-    print(self.cards)
+    self.minions = o.minions or false --Whether or not this gallery is for displaying minions
 
     if next(self.cards) ~= nil then --Incase its empty
         table.sort(self.cards,function(a,b) --sort the cards so the order is lost and so that the number of copies is obvious.
@@ -22,17 +22,19 @@ function gallery:init(o)
         end)
         self.book = self:createBook() --Books are made up of pages
     else
-        self.book = {[1] = page:new(o.minions)}
+        self.book = {[1] = page:new({cards = {}, minions = self.minions})} --If there are no cards then just make a blank page
     end
 
     self.selectedPage = 1
 
-    if not o.minions then
-         self.buttons = {["leftTurnButton"] = self:makeLeftRotate(),
-    ["rightTurnButton"] = self:makeRightRotate()}
+    self.buttons = {}
+
+    if not self.minions and #self.book > 1 then
+         self.buttons = {["leftTurn"] = self:makeLeftRotate(),
+    ["rightTurn"] = self:makeRightRotate()}
     end
 
-    self.buttons["exitButton"] = self:makeExitButton()
+    self.buttons["exit"] = self:makeExitButton()
 
     Signal.register("drawGalleryButtons", function() self:drawButtons() end)
 end

@@ -19,6 +19,7 @@ end
 
 function deck:discard(card)
     table.insert(self.discardPile,card)
+    print("Discarded " .. card.title .. " Cards in deck: " .. #self.cards .. " Cards in discard pile: " .. #self.discardPile)
 end
 
 function deck:drawACard() --return the card at the end of the cards array and remove it

@@ -40,6 +40,8 @@ assetManager.buttons = {
 assetManager.cardArt = {
     ["Placeholder"] = love.graphics.newImage('assets/cardArt/Placeholder.png'),
     ["Fortify"] = love.graphics.newImage('assets/cardArt/Fortify.png'),
+    ["Slash"] = love.graphics.newImage('assets/cardArt/Slash.png'),
+    ["MinionPlaceholder"] = love.graphics.newImage('assets/cardArt/MinionPlaceholder.png')
 }
 
 assetManager.minionArt = {

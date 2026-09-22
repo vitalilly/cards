@@ -1,6 +1,8 @@
 local Card = require 'entity.card'
 local assetmanager = require 'core.assetmanager'
+local label = require 'entity.label'
 
+local maxMinions = 5
 local minion = Card:extend()
 
 function minion:init(o) --Intitialise an instance of the card class
@@ -9,8 +11,12 @@ function minion:init(o) --Intitialise an instance of the card class
 
     self.health = o.health or 0
     self.minionArt = o.minionArt or assetmanager.minionArt["Placeholder"]
+    self.image = o.image or assetmanager:getCardArt("MinionPlaceholder")
     self.effectTagList = self.effectEnum()
     self.effectTags = {}
+
+    self.label = label:new({text = self.health})
+
     table.insert(self.effectTags,self.effectTagList.None) --Default to no effect
 end
 
@@ -32,6 +38,10 @@ function minion:play()
 end
 
 function minion:minionPlay()
+    if #self.player.minions >= maxMinions then
+        --Feedback that the max number of minions has been achieved so the card has been wasted
+        return
+    end
     table.insert(self.player.minions,self)
 
     if self.contains(self.effectTags,self.effectTagList.None) then
@@ -49,7 +59,6 @@ function minion:minionPlay()
     if self.contains(self.effectTags,self.effectTagList.EOT) then
         table.insert(self.player.effectsEOT,self)
     end
-
 
 end
 
@@ -91,6 +100,8 @@ end
 
 function minion:drawMinion(x,y)
     love.graphics.draw(self.minionArt,x,y)
+    self.label.text = self.health
+    self.label:drawAt(x + 21,y + 50)
 end
 
 return minion

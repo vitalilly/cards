@@ -13,6 +13,7 @@ local function getGrid() --Run this function and store the result statically to 
     local grid = {}
     local workableX = config.gamew - (border*2) --Get the space the cards may be in horiztonally as an int
     local workableY = config.gameh - border - wideBorder --Get the space the cards may be in vertically as an int
+
     for i = 1, rows, 1 do
         for j = 1, collumns, 1 do
             local x = (j-1)*math.floor(workableX/collumns) + border
@@ -31,7 +32,7 @@ function page:init(o)
     Entity.init(self,o)
 
     self.cards = o.cards or {}
-    self.minions = o.minions or false
+    self.minions = o.minions or false --Whether or not this page is for displaying minions
 end
 
 function page.getDimensions()
@@ -40,24 +41,23 @@ end
 
 function page:draw()
     local startPoint
-    if not self.minions then
-        startPoint = 1 + collumns
+    if self.minions then
+        startPoint = collumns
     else
-        startPoint = 1
+        startPoint = 0
     end
 
-    for i = startPoint, #self.cards, 1 do
+    for i = 1, #self.cards, 1 do
         local card = self.cards[i]
-        local coords = grid[i]
+        local coords = grid[i + startPoint]
         if not self.minions then
             card:drawAt(coords.x,coords.y)
         else
-            card:drawMinion(coords.x,coords.y)
+            card:drawMinion(coords.x + 25,coords.y)
         end
     end
 end
 
 return page
-
 
 

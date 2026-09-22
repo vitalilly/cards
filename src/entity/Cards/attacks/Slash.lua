@@ -9,7 +9,7 @@ function slash:init(o)
 
     self.title = "Slash"
     self.targets = true
-    self.image = assetManager:getCardArt("Placeholder")
+    self.image = assetManager:getCardArt("Slash")
     self.tag = self.tagList.Attack
 end
 

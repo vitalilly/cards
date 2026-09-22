@@ -118,8 +118,8 @@ function hand:moveToIdeal(mouseX,mouseY)
                 v.grabbed = false
                 if mouseY < idealposy - heightExtension - config.cardHeight/2 - dropBuffer then --Playing a card logic
                     if self.player:playCard(v) then
-                        table.remove(self.cards,i)
                         self.deck:discard(v)
+                        table.remove(self.cards,i)
                         self:updateCardTables()
                     end
                 end

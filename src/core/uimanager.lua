@@ -119,7 +119,6 @@ function(player,view)
     input('clicked',function()
         player:undrawButtons()
         local cards = player.deck.discardPile
-        print(#cards)
         Signal.emit('SwitchToGallery',cards,false) --Switch to the gallery scene and pass the cards to it
         Signal.emit('drawGalleryButtons')
     end)
@@ -129,6 +128,40 @@ function(player,view)
         love.graphics.rectangle('fill',0,0,view.w,view.h)
         love.graphics.setColor(1,1,1)
         love.graphics.print("Show Discard!!")
+    end
+end)
+
+ownMinions = helium(
+    function(player,view)
+    input('clicked', function()
+        player:undrawButtons()
+        local cards = player.minions
+        Signal.emit('SwitchToGallery', cards,true)
+        Signal.emit('drawGalleryButtons')
+    end)
+
+    return function()
+        love.graphics.setColor(8/255,0.4,0.6)
+        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.setColor(1,1,1)
+        love.graphics.print("Own Minions!!")
+    end
+end)
+
+theirMinions = helium(
+    function(player,view)
+    input('clicked', function()
+        player:undrawButtons()
+        local cards = player:getCurrentOpponent().minions
+        Signal.emit('SwitchToGallery', cards,true)
+        Signal.emit('drawGalleryButtons')
+    end)
+
+    return function()
+        love.graphics.setColor(8/255,0.4,0.6)
+        love.graphics.rectangle('fill',0,0,view.w,view.h)
+        love.graphics.setColor(1,1,1)
+        love.graphics.print("Their Minions!!")
     end
 end)
 
@@ -151,6 +184,7 @@ exitGallery = helium(
     function(gallery,view)
         input('clicked',function()
             gallery:undrawButtons()
+            Signal.clear("drawGalleryButtons")
             Signal.emit('SwitchToGame')
             Signal.emit('drawPlayerButtons')
         end)

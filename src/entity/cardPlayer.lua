@@ -2,6 +2,7 @@ local Entity = require 'core.entity'
 local hand = require 'entity.hand'
 local deck = require 'entity.deck'
 local cardbinder = require 'core.cardbinder'
+local deckTemplate = require 'core.deckTemplate'
 local globals = require 'globals'
 local assetManager = require 'core.assetmanager'
 local conf = require 'conf'
@@ -24,7 +25,7 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.health = self.maxHealth
 
     self.deck = o.deck or deck:new()
-    self.deck = self:testDeck(50) --For testing
+    self.deck = deckTemplate:Balanced(self) --For testing
     self.hand = o.hand or hand:new({player = self, deck = self.deck})
 
     self.pendingDamage = o.pendingDamage or 0 --Damage that will be dealt to the player
@@ -55,11 +56,13 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
         return
     end
 
-    self.buttons = {["endTurnButton"] = self:makeEndTurn(),
-    ["rightRotateButton"] = self:makeRightRotate(),
-    ["leftRotateButton"] = self:makeLeftRotate(),
-    ["showDiscardButton"] = self:makeShowDiscard(),
-    ["showDeckButton"] = self:makeShowDeck()}
+    self.buttons = {["endTurn"] = self:makeEndTurn(),
+    ["rightRotate"] = self:makeRightRotate(),
+    ["leftRotate"] = self:makeLeftRotate(),
+    ["showDiscard"] = self:makeShowDiscard(),
+    ["showDeck"] = self:makeShowDeck(),
+    ["ownMinions"] = self:makeOwnMinions(),
+    ["theirMinions"] = self:makeTheirMinions()}
 
     self:drawButtons()
     Signal.register("drawPlayerButtons", function() self:drawButtons() end)
@@ -139,6 +142,37 @@ function cardPlayer:makeShowDeck()
     return showDeckButton
 end
 
+function cardPlayer:makeOwnMinions()
+    local localX,localY = conf.gamew + 50,conf.gameh-50
+    local localW,localH = 200,30
+
+    --localX,localY = push:toGame(localX,localY)
+    localW,localH = push:toGame(localW,localH)
+
+    local view = {h = localH, w = localW,x = localX, y = localY}
+
+    local ownMinionsButton = ownMinions(self,view.w,view.h)
+    ownMinionsButton:draw(view.x,view.y)
+    ownMinionsButton.view = view
+    return ownMinionsButton
+end
+
+function cardPlayer:makeTheirMinions()
+    local localX,localY = conf.gamew + 50,conf.gameh - 20
+    local localW,localH = 200,30
+
+    --localX,localY = push:toGame(localX,localY)
+    localW,localH = push:toGame(localW,localH)
+
+    local view = {h = localH, w = localW,x = localX, y = localY}
+
+    local theirMinionsButton = theirMinions(self,view.w,view.h)
+    theirMinionsButton:draw(view.x,view.y)
+    theirMinionsButton.view = view
+    return theirMinionsButton
+end
+
+
 function cardPlayer:RotateTarget(left) -- Called by the right arrow button
     if left then
         self.selectedOpponent = self.selectedOpponent - 1
@@ -151,18 +185,6 @@ function cardPlayer:RotateTarget(left) -- Called by the right arrow button
             self.selectedOpponent = 1
         end
     end
-end
-
-function cardPlayer:testDeck(num) --Test function to see if the hand is working
-    local result = deck:new()
-    for i = 1,num/2,1 do
-        result:addCard(cardbinder:getCard("Slash", self))
-    end
-    for i = 1,num/2,1 do
-        result:addCard(cardbinder:getCard("Fortify", self))
-    end
-    result:shuffle()
-    return result
 end
 
 function cardPlayer:startTurn()
@@ -210,26 +232,26 @@ end
 --TODO Add arrows to the screen that allow the player to cycle through opponents for the purpose of understanding the field and targeting.
 function cardPlayer:checkForEffects(tuple)
     for _,v in ipairs(self.effects) do
-        v.effect(tuple)
+        v:effect(tuple)
     end
 end
 
 function cardPlayer:checkForSOT()
     for _,v in ipairs(self.effectsSOT) do
-        v.SOT()
+        v:SOT()
     end
 end
 
 function cardPlayer:checkForEOT()
     for _,v in ipairs(self.effectsEOT) do
-        v.EOT()
+        v:EOT()
     end
 end
 
 function cardPlayer:DeterminePendingDamage() --Determine the largest source of damage and turn that into the pending damage
     local max = 0
     for _, v in pairs(self.allSourcesOfDamage) do
-        print(v)
+
         if v > max then
             max = v
         end

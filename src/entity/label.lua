@@ -10,6 +10,8 @@ function label:init(o)
     self.x = o.x or 0
     self.y = o.y or 0
 
+    self.push = o.push or true
+
     self:setXY(self.x,self.y)
 end
 
@@ -18,8 +20,12 @@ function label:setXY(x,y)
 end
 
 function label:draw()
+    self:drawAt(self.x,self.y)
+end
+
+function label:drawAt(x,y)
     love.graphics.push()
-    love.graphics.translate(self.x,self.y)
+    love.graphics.translate(x,y)
     love.graphics.print(self.text,0,0)
     love.graphics.pop()
 end
