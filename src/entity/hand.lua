@@ -2,6 +2,7 @@ local Entity = require 'core.entity'
 local deck = require 'entity.deck'
 local config = require 'conf'
 local hitbox = require 'entity.hitbox'
+local description = require 'entity.description'
 
 local hand = Entity:extend()
 local heightExtension = config.cardHeight + 5 --Defines how high the cards raise
@@ -16,6 +17,7 @@ function hand:init(o)
     self.idealPositions = o.idealPositions or self:getIdealPositions() --stores the ideal positions of the cards in the hand
     self.hitboxes = o.hitboxes or self:gethitboxes() --stores the hitboxes of the cards in the hand
     self.player = o.player or {} --Reference to the player who owns this hand.
+    self.description = description:new()
 
     self.leftPosition = o.leftPosition or 0 --Defines the boundaries between the left and right of the hand for empty
     self.spacing = o.spacing or 0
@@ -87,6 +89,8 @@ function hand:draw() --Draw the cards in the hand
     for i, v in ipairs(self.cards) do
         v:draw()
     end
+
+    self.description:draw()
 end
 
 function hand:update(dt) --Update to be used whenever the number of cards in hand changes

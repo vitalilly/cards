@@ -10,8 +10,6 @@ function label:init(o)
     self.x = o.x or 0
     self.y = o.y or 0
 
-    self.push = o.push or true
-
     self:setXY(self.x,self.y)
 end
 

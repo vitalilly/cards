@@ -23,6 +23,8 @@ function deckTemplate:Balanced(owner)
         returnDeck:addCard(cardBinder:getCard("Angel",owner))
     end
 
+    returnDeck:shuffle()
+
     return returnDeck
 
 end

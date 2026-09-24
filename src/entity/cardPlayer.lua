@@ -46,13 +46,13 @@ function cardPlayer:init(o) --Intitialise an instance of the card class
     self.sprite = o.sprite or assetManager.players["Player1"]
 
     self.healthLabel = label:new({text = "H " .. self.health .. "/" .. self.maxHealth, x = 0, y = conf.windowh-30})
-    self.defenseLabel = label:new({text = "D " .. self.currentBlock, x = conf.windoww/2 - 50, y = 30})
-    self.pendingLabel = label:new({text = "P ".. self.pendingDamage,x = conf.windoww/2 + 50, y = 30})
+    self.defenseLabel = label:new({text = "D " .. self.currentBlock, x = conf.windoww/2 - 60, y = 30})
+    self.pendingLabel = label:new({text = "P ".. self.pendingDamage,x = conf.windoww/2 + 40, y = 30})
 
     if self.ID ~= globals.ID then --All beyond here go no further unless you are the truest of players
-        self.healthLabel:setXY(conf.windoww/2 - 50,conf.windowh/2 - 140)
-        self.defenseLabel:setXY(conf.windoww/2-70,conf.windowh/2 + 110)
-        self.pendingLabel:setXY(conf.windoww/2+30,conf.windowh/2 + 110)
+        self.healthLabel:setXY(conf.windoww/2 - 50,conf.windowh/2 - 240)
+        self.defenseLabel:setXY(conf.windoww/2-70,conf.windowh/2)
+        self.pendingLabel:setXY(conf.windoww/2+30,conf.windowh/2)
         return
     end
 
@@ -314,14 +314,14 @@ function cardPlayer:drawOwnLabels()
 
     self.defenseLabel.text = "D " .. self.currentBlock
     self.defenseLabel:draw()
-    
+
     self.pendingLabel.text = "P ".. self.pendingDamage
     self.pendingLabel:draw()
 
 end
 
 function cardPlayer:drawSelf()
-    local localX,localY = push:toGame(conf.windoww/2 - 45,conf.windowh/2 - 100)
+    local localX,localY = push:toGame(conf.windoww/2 - 45,conf.windowh/2 - 200)
     love.graphics.draw(self.sprite,localX,localY)
 
     self:drawOwnLabels()
